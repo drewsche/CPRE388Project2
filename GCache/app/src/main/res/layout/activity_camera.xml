@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".Camera">
 
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:orientation="horizontal"
+            android:layout_weight="85">
+            <androidx.camera.view.PreviewView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/preview_view">
+            </androidx.camera.view.PreviewView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="15"
+            android:orientation="horizontal">
+            <Space
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="25">
+
+            </Space>
+            <ImageButton
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:id="@+id/buttonShutterTakePhoto">
+            </ImageButton>
+            <Space
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="25">
+
+            </Space>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
