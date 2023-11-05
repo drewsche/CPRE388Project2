@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId() == R.id.buttonCameraActivity) {
             Log.d(TAG, "onClick: called");
-            Intent intent = new Intent(this, Camera.class);
+            Intent intent = new Intent(this, GeoCamera.class);
             startActivity(intent);
             finish();
         }
