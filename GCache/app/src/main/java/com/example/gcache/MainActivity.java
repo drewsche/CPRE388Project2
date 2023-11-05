@@ -12,11 +12,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button buttonCameraActivity;
     private static final String TAG = "MainActivity";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buttonCameraActivity = (Button)findViewById(R.id.buttonCameraActivity);
+        buttonCameraActivity.setOnClickListener(this);
 
     }
 
