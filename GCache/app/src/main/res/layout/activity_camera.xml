@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Camera">
+    tools:context=".GeoCamera">
 
     <LinearLayout
         android:layout_width="409dp"
@@ -30,18 +30,25 @@
             android:layout_height="0sp"
             android:layout_weight="15"
             android:orientation="horizontal">
-            <Space
+            <Button
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_weight="25">
+                android:layout_weight="25"
+                android:id="@+id/buttonCameraBackToMain"
+                android:textSize="24dp"
+                android:text="🏠"
+                >
+            </Button>
 
-            </Space>
-            <ImageButton
+            <Button
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
-                android:id="@+id/buttonShutterTakePhoto">
-            </ImageButton>
+                android:id="@+id/buttonTakePhotoShutter"
+                android:textSize="24dp"
+                android:text="📷">
+            </Button>
+
             <Space
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
