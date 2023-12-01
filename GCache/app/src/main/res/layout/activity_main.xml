@@ -22,6 +22,13 @@
                android:text="@string/camera_activity_button"
                android:id="@+id/buttonCameraActivity">
            </Button>
+           <Button
+               android:layout_width="0sp"
+               android:layout_weight="33"
+               android:layout_height="wrap_content"
+               android:id="@+id/buttonUploadActivity"
+               android:text="Upload Files Activity">
+           </Button>
 
        </LinearLayout>
 

@@ -53,5 +53,9 @@ dependencies {
     implementation("androidx.camera:camera-mlkit-vision:${camerax_version}")
     // If you want to additionally use the CameraX Extensions library
     implementation("androidx.camera:camera-extensions:${camerax_version}")
+    def activity_version = "1.7.0"
+
+    // Java language implementation
+    implementation "androidx.activity:activity:${activity_version}"
 
 }
