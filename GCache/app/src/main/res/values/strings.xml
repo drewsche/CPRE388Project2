@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GCache</string>
+    <string name="camera_activity_button">Open Camera</string>
 </resources>
