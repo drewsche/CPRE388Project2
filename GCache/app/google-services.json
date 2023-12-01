@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "245922563584",
+    "project_id": "gcache-e5e32",
+    "storage_bucket": "gcache-e5e32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245922563584:android:a408f675ba4eb5057b7ae5",
+        "android_client_info": {
+          "package_name": "com.example.gcache"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_GYyIIABPwrlaCNEoeZ74chmKJjvUgRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
