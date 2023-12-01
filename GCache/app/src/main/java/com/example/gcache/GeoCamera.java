@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,9 +28,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -110,7 +107,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         } else if(v.getId() == R.id.buttonCameraBackToMain) {
             //camera backToMainIntent
             Log.d(TAG, "onClick: Want to go to main");
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, PublicActivity.class);
             startActivity(intent);
             finish();
         }
