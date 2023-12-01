@@ -48,13 +48,15 @@
                 android:textSize="24dp"
                 android:text="📷">
             </Button>
-
-            <Space
+            <Button
+                android:id="@+id/flipCamera"
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_weight="25">
+                android:layout_weight="25"
+                android:textSize="24dp"
+                android:text="↻">
+            </Button>
 
-            </Space>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

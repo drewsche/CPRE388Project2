@@ -65,9 +65,8 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
 
 
-    private Executor executor; //TODO make sure this is what I am supposed to do.
-    //I think it would be something. Check with
-    // the Threading lab
+
+
 
 
     @Override
@@ -218,6 +217,8 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         Log.d(TAG, "bindPreview: Binding Complete");
 
     }
+
+
 
 
 
