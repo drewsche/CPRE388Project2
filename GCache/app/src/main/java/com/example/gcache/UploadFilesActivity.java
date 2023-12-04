@@ -58,7 +58,6 @@ public class UploadFilesActivity extends AppCompatActivity implements View.OnCli
             Log.d(TAG, "onClick: Files Go Back to Main");
             Intent intent = new Intent(this, PublicActivity.class);
             startActivity(intent);
-            finish();
         }
     }
 

@@ -48,4 +48,9 @@ public class PublicActivity extends AppCompatActivity {
         Intent toAccount = new Intent(this, AccountActivity.class);
         startActivity(toAccount);
     }
+
+    public void onMapsClicked(View v) {
+        Intent toMaps = new Intent(this, MapsActivity.class);
+        startActivity(toMaps);
+    }
 }
