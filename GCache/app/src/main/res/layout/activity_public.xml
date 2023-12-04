@@ -157,7 +157,8 @@
                android:textColor="#000000"
                android:textSize="20sp"
                android:textStyle="bold"
-               app:cornerRadius="0dp" />
+               app:cornerRadius="0dp"
+               android:onClick="onMapsClicked"/>
 
            <androidx.constraintlayout.widget.ConstraintLayout
                android:layout_width="2dp"

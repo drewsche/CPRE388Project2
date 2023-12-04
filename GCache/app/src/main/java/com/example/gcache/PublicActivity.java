@@ -51,6 +51,7 @@ public class PublicActivity extends AppCompatActivity {
 
     public void onMapsClicked(View v) {
         Intent toMaps = new Intent(this, MapsActivity.class);
+        Log.d(TAG, "onMapsClicked: goToMaps");
         startActivity(toMaps);
     }
 }
