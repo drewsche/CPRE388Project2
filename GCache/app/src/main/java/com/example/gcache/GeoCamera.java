@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 
-public class GeoCamera extends AppCompatActivity implements View.OnClickListener{
+public class GeoCamera extends AppCompatActivity implements View.OnClickListener {
 
     private static final String[] DESIRED_PERMISSIONS = {Manifest.permission.CAMERA};
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -63,10 +63,12 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     private File photosDir;
     private String currentPhotoPath;
 
+    private Button switchLens;
 
-
-
-
+    Camera camera;
+    Preview preview;
+    CameraSelector cameraSelector;
+    ProcessCameraProvider cameraProvider;
 
 
     @Override
@@ -80,8 +82,11 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         shutterButton = (Button) findViewById(R.id.buttonCameraBackToMain);
         shutterButton.setOnClickListener(this);
 
-        cameraBackToMain = (Button)findViewById(R.id.buttonTakePhotoShutter);
+        cameraBackToMain = (Button) findViewById(R.id.buttonTakePhotoShutter);
         cameraBackToMain.setOnClickListener(this);
+
+        switchLens = (Button) findViewById(R.id.buttonSwitchLens);
+        switchLens.setOnClickListener(this);
 
 
         /**
@@ -100,16 +105,18 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.buttonTakePhotoShutter) {
+        if (v.getId() == R.id.buttonTakePhotoShutter) {
             //take photo shutter
             Log.d(TAG, "onClick: Take Photo");
             takePhoto();
-        } else if(v.getId() == R.id.buttonCameraBackToMain) {
+        } else if (v.getId() == R.id.buttonCameraBackToMain) {
             //camera backToMainIntent
             Log.d(TAG, "onClick: Want to go to main");
             Intent intent = new Intent(this, PublicActivity.class);
             startActivity(intent);
             finish();
+        } else if (v.getId() == R.id.buttonSwitchLens) {
+            switchLens();
         }
     }
 
@@ -148,7 +155,6 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
                 .build();
 
 
-
         ImageCapture imageCapture =
                 new ImageCapture.Builder()
                         .setTargetRotation(previewView.getDisplay().getRotation())
@@ -164,20 +170,20 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     }
 
     private void checkPermissions() {
-            if (ActivityCompat.checkSelfPermission(this, DESIRED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED ) {
-                /**
-                 * I don't have permissions so request Permissions
-                 */
-                Log.d(TAG, "checkPermissions: Don't have permissions.");
-                ActivityCompat.requestPermissions(this, DESIRED_PERMISSIONS, PERMISSION_REQUEST_CODE);
-            } else {
-                /**
-                 * Do Camera Things
-                 */
-                Log.d(TAG, "checkPermissions: Starting Camera Setup!");
-                setupCamera();
+        if (ActivityCompat.checkSelfPermission(this, DESIRED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED) {
+            /**
+             * I don't have permissions so request Permissions
+             */
+            Log.d(TAG, "checkPermissions: Don't have permissions.");
+            ActivityCompat.requestPermissions(this, DESIRED_PERMISSIONS, PERMISSION_REQUEST_CODE);
+        } else {
+            /**
+             * Do Camera Things
+             */
+            Log.d(TAG, "checkPermissions: Starting Camera Setup!");
+            setupCamera();
 
-            }
+        }
 
     }
 
@@ -185,7 +191,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
         cameraProviderFuture.addListener(() -> {
             try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                 cameraProvider = cameraProviderFuture.get();
                 bindPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
@@ -193,7 +199,6 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
             }
         }, ContextCompat.getMainExecutor(this));
         Log.d(TAG, "setupCamera: Camera Setup Complete");
-
 
 
     }
@@ -204,22 +209,19 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         /**
          * Build the 3 objects needed as arguments to cameraProvider.bindToLifecycle
          */
-        Preview preview = new Preview.Builder().build();
+        preview = new Preview.Builder().build();
 
-        CameraSelector cameraSelector = new CameraSelector.Builder()
+        cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
 
-        Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
+        camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
         Log.d(TAG, "bindPreview: Binding Complete");
 
     }
-
-
-
 
 
     private File createImageFile() throws IOException {
@@ -237,7 +239,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
-    
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -259,6 +261,18 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
+    }
+
+    private void switchLens() {
+        Log.d(TAG, "switchLens: is not currently working :(");
+//
+//        Log.d(TAG, "switchLens: called");
+//        cameraSelector = new CameraSelector.Builder()
+//                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+//                .build();
+//
+//
+//        camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
     }
 
 
