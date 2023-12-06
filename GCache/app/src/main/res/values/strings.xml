@@ -12,4 +12,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_account">AccountActivity</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="message_no_results">Oops, couldn\'t find any results\nthat matched your filter</string>
 </resources>

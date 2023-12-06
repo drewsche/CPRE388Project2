@@ -50,7 +50,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/postItem_textView_points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Points:"
@@ -126,95 +126,73 @@
                 app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#000000">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:background="#000000"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button8"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="#9FD1E8"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:padding="0dp"
-                android:text="Album"
+                android:text="ALBUM"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:cornerRadius="0dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="#000000">
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <Button
                 android:id="@+id/button11"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="#9FD1E8"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:onClick="onPublicClicked"
                 android:padding="0dp"
-                android:text="Public"
+                android:text="PUBLIC"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:cornerRadius="0dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="#000000">
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
                 android:id="@+id/button12"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="#9FD1E8"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:onClick="onMapsClicked"
                 android:padding="0dp"
-                android:text="Map"
+                android:text="MAP"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:cornerRadius="0dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="#000000">
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <Button
                 android:id="@+id/button13"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="#4CAF50"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:padding="0dp"
-                android:text="Account"
+                android:text="ACCOUNT"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -222,4 +200,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

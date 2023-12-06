@@ -39,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 
 
 public class GeoCamera extends AppCompatActivity implements View.OnClickListener {

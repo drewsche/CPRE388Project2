@@ -5,13 +5,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -48,8 +49,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_maps);
+
+//        binding = ActivityMapsBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -137,5 +140,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          */
         geocoder.getFromLocationName(homeString,1, geocodeListener);}
 
-
+    public void onPublicClicked(View view) {
+        Intent toPublic = new Intent(this, PublicActivity.class);
+        startActivity(toPublic);
+    }
+    public void onAccountClicked(View view) {
+        Intent toAccount = new Intent(this, AccountActivity.class);
+        startActivity(toAccount);
+    }
 }

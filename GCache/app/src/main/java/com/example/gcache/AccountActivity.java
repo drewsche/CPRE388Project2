@@ -56,6 +56,11 @@ public class AccountActivity extends AppCompatActivity {
         Intent toPublic = new Intent(this, PublicActivity.class);
         startActivity(toPublic);
     }
+    public void onMapsClicked(View v) {
+        Intent toMaps = new Intent(this, MapsActivity.class);
+        Log.d(TAG, "onMapsClicked: goToMaps");
+        startActivity(toMaps);
+    }
 
     public void onSignOutClicked(View view) {
         signOut();
