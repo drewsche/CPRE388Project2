@@ -41,7 +41,7 @@ import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 
 
-public class GeoCamera extends AppCompatActivity implements View.OnClickListener {
+public class GeoCameraFront extends AppCompatActivity implements View.OnClickListener {
 
     private static final String[] DESIRED_PERMISSIONS = {Manifest.permission.CAMERA};
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -64,19 +64,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     private Button switchLens;
 
-    /**
-     * Variables for showing camera preview.
-     */
     Camera camera;
     Preview preview;
     CameraSelector cameraSelector;
     ProcessCameraProvider cameraProvider;
-
-    /**
-     * Variables for saving photo
-     */
-    ContentValues contentValues;
-    ImageCapture.OutputFileOptions outputFileOptions;
 
 
     @Override
@@ -128,27 +119,25 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    ImageCapture.OnImageSavedCallback imageSavedCallback = new ImageCapture.OnImageSavedCallback() {
-        @Override
-        public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-            Log.d(TAG, "onImageSaved: File Saved: " + outputFileResults.getSavedUri());
-        }
-
-        @Override
-        public void onError(@NonNull ImageCaptureException exception) {
-            Log.d(TAG, "onError: Error in saving image. Try again" + exception);
-        }
-    };
-
     private void takePhoto() {
-        contentValues = new ContentValues();
+        ContentValues contentValues = new ContentValues();
         contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "NEW_IMAGE");
         contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
+        ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
                 getContentResolver(),
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 contentValues).build();
+        ImageCapture.OnImageSavedCallback imageSavedCallback = new ImageCapture.OnImageSavedCallback() {
+            @Override
+            public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                Log.d(TAG, "onImageSaved: File Saved: " + outputFileResults.getSavedUri());
+            }
 
+            @Override
+            public void onError(@NonNull ImageCaptureException exception) {
+                Log.d(TAG, "onError: Error in saving image. Try again" + exception);
+            }
+        };
 
         ProcessCameraProvider cameraProvider = null;
         try {
@@ -160,9 +149,9 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
 
 
-//        CameraSelector cameraSelector = new CameraSelector.Builder()
-//                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-//                .build();
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
 
 
         ImageCapture imageCapture =
@@ -201,8 +190,8 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
         cameraProviderFuture.addListener(() -> {
             try {
-                 cameraProvider = cameraProviderFuture.get();
-                 bindPreview(cameraProvider);
+                cameraProvider = cameraProviderFuture.get();
+                bindPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
                 // This should never be reached.
@@ -275,28 +264,14 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     private void switchLens() {
         Log.d(TAG, "switchLens: is not currently working :(");
-
-        cameraProvider.unbindAll();
-
-
-        preview = new Preview.Builder().build();
-
-        cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                .build();
-
-        ImageCapture imageCapture =
-                new ImageCapture.Builder()
-                        .setTargetRotation(previewView.getDisplay().getRotation())
-                        .build();
-
-        preview.setSurfaceProvider(previewView.getSurfaceProvider());
-        Camera capCam = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
-
-
-
-
-
+//
+//        Log.d(TAG, "switchLens: called");
+//        cameraSelector = new CameraSelector.Builder()
+//                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+//                .build();
+//
+//
+//        camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
     }
 
 

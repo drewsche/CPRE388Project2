@@ -24,6 +24,9 @@
         android:theme="@style/Theme.GCache"
         tools:targetApi="31">
         <activity
+            android:name=".GeoCameraFront"
+            android:exported="false" />
+        <activity
             android:name=".PostActivity"
             android:exported="false" />
         <!--
