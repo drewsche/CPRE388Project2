@@ -140,6 +140,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          */
         geocoder.getFromLocationName(homeString,1, geocodeListener);}
 
+    public void onCameraClicked(View view) {
+        Log.d(TAG, "onClick: called");
+        Intent toCamera = new Intent(this, GeoCamera.class);
+        startActivity(toCamera);
+    }
+
+    public void onAlbumClicked(View view) {
+        Intent toAlbum = new Intent(this, AlbumActivity.class);
+        startActivity(toAlbum);
+    }
     public void onPublicClicked(View view) {
         Intent toPublic = new Intent(this, PublicActivity.class);
         startActivity(toPublic);

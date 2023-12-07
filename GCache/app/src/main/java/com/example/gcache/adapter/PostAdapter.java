@@ -76,7 +76,7 @@ public class PostAdapter extends FirestoreAdapter<PostAdapter.ViewHolder> {
                     .into(photoView);
 
             Timestamp tempDateTime = post.getDateTime();
-            dateTimeView.setText("On " + tempDateTime.toString());
+            dateTimeView.setText("On " + tempDateTime.toDate());
             locationNameView.setText("At " + post.getLocationName());
             String poster = post.getPoster();
             String metPerson = post.getMetPerson();

@@ -14,4 +14,11 @@
     <string name="title_activity_maps">MapsActivity</string>
 
     <string name="message_no_results">Oops, couldn\'t find any results\nthat matched your filter</string>
+
+    <!-- Ways you can sort restaurants -->
+    <string-array name="sort_by">
+        <item>"Sort By Date"</item>
+        <item>"Sort By Points"</item>
+    </string-array>
+
 </resources>

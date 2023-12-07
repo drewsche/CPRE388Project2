@@ -52,6 +52,10 @@ public class AccountActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+    public void onAlbumClicked(View view) {
+        Intent toAlbum = new Intent(this, AlbumActivity.class);
+        startActivity(toAlbum);
+    }
     public void onPublicClicked(View view) {
         Intent toPublic = new Intent(this, PublicActivity.class);
         startActivity(toPublic);
