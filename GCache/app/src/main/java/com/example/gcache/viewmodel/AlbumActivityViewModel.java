@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.gcache.Filters;
 
-public class PublicActivityViewModel extends ViewModel {
+public class AlbumActivityViewModel extends ViewModel {
 
     private Filters mFilters;
 
-    public PublicActivityViewModel() {
+    public AlbumActivityViewModel() {
         mFilters = Filters.getDefault();
     }
 

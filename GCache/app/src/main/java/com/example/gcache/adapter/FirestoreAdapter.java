@@ -32,7 +32,6 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     public void startListening() {
-        // TODO(developer): Implement
         if (mQuery != null && mRegistration == null) {
             mRegistration = mQuery.addSnapshotListener(this);
         }
@@ -90,15 +89,12 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
             DocumentSnapshot snapshot = change.getDocument();
             switch (change.getType()) {
                 case ADDED:
-                    // TODO: handle document added
                     onDocumentAdded(change);
                     break;
                 case MODIFIED:
-                    // TODO: handle document modified
                     onDocumentModified(change);
                     break;
                 case REMOVED:
-                    // TODO: handle document removed
                     onDocumentRemoved(change);
                     break;
             }

@@ -8,7 +8,7 @@ import com.google.firebase.firestore.Query;
 
 public class Filters {
 
-    private String poster = null;
+    private String posterUID = null;
     private String visibility = null;
     private String sortBy = null;
     private Query.Direction sortDirection = null;
@@ -23,14 +23,14 @@ public class Filters {
         return filters;
     }
 
-    public boolean hasPoster() {
-        return !(TextUtils.isEmpty(poster));
+    public boolean hasPosterUID() {
+        return !(TextUtils.isEmpty(posterUID));
     }
-    public String getPoster() {
-        return poster;
+    public String getPosterUID() {
+        return posterUID;
     }
-    public void setPoster(String poster) {
-        this.poster = poster;
+    public void setPosterUID(String posterUID) {
+        this.posterUID = posterUID;
     }
 
     public boolean hasVisibility() {
@@ -63,14 +63,14 @@ public class Filters {
     public String getSearchDescription(Context context) {
         StringBuilder desc = new StringBuilder();
 
-        if (poster == null) {
+        if (posterUID == null) {
             desc.append("<b>");
             desc.append("All ");
             desc.append("</b>");
         }
         else {
             desc.append("<b>");
-            desc.append(poster + "'s ");
+            desc.append("Your ");
             desc.append("</b>");
         }
 
