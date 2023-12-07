@@ -1,9 +1,11 @@
 package com.example.gcache.adapter;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gcache.PublicActivity;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -34,6 +36,7 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         if (mQuery != null && mRegistration == null) {
             mRegistration = mQuery.addSnapshotListener(this);
         }
+        Log.d(TAG, "Started Listening");
     }
 
     public void stopListening() {

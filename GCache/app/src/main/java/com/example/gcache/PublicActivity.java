@@ -1,16 +1,20 @@
 package com.example.gcache;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gcache.adapter.PostAdapter;
+import com.example.gcache.viewmodel.PublicActivityViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,29 +25,40 @@ import com.google.firebase.firestore.Query;
 
 public class PublicActivity extends AppCompatActivity implements
 //        View.OnClickListener,
-//        FilterDialogFragment.FilterListener,
+        FilterDialogFragment.FilterListener,
         PostAdapter.OnPostSelectedListener {
 
     private static final String TAG = "PublicActivity";
     private static final int LIMIT = 50;
 
+    private TextView mContentView;
+    private TextView mSortByView;
     private RecyclerView publicPostsRecycler;
     private TextView mEmptyView;
 
     private FirebaseFirestore mFirestore;
     private Query mQuery;
 
+    private FilterDialogFragment mFilterDialog;
+
     private PostAdapter mAdapter;
+
+    private PublicActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public);
 
+        mContentView = findViewById(R.id.publicActivity_textView_contents);
+        mSortByView = findViewById(R.id.publicActivity_textView_sortBy);
         publicPostsRecycler = findViewById(R.id.publicActivity_recyclerView_publicPosts);
         mEmptyView = findViewById(R.id.publicActivity_textView_noResults);
 
-        checkCurrentUser();
+        mViewModel = new ViewModelProvider(this).get(PublicActivityViewModel.class);
+
+        // Enable Firestore logging
+        FirebaseFirestore.setLoggingEnabled(true);
 
         // Initialize Firestore and the main RecyclerView
         mFirestore = FirebaseFirestore.getInstance();
@@ -51,6 +66,11 @@ public class PublicActivity extends AppCompatActivity implements
                 .orderBy("dateTime", Query.Direction.DESCENDING)
                 .limit(LIMIT);
         initRecyclerView();
+
+        // Filter Dialog
+        mFilterDialog = new FilterDialogFragment();
+
+        checkCurrentUser();
     }
 
     public void checkCurrentUser() {
@@ -108,6 +128,9 @@ public class PublicActivity extends AppCompatActivity implements
         if (mAdapter != null) {
             mAdapter.startListening();
         }
+
+        // Apply filters
+        onFilter(mViewModel.getFilters());
     }
 
     @Override
@@ -119,9 +142,48 @@ public class PublicActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onFilter(Filters filters) {
+        filters.setVisibility("Public");
+        Query query = mFirestore.collection("posts"); //hint: CollectionReference extends Query
+
+        if(filters.hasPoster()) {
+            query = query.whereEqualTo("poster",filters.getPoster());
+        }
+
+        if(filters.hasVisibility()) {
+            query = query.whereEqualTo("visibility",filters.getVisibility());
+        }
+
+        if(filters.hasSortBy()) {
+            query = query.orderBy(filters.getSortBy(), filters.getSortDirection());
+        }
+
+        // Limit items
+        query = query.limit(LIMIT);
+
+        // Update the query
+        mQuery = query;
+        mAdapter.setQuery(query);
+
+        // Set header
+        mContentView.setText(
+                Html.fromHtml(filters.getSearchDescription(this)));
+        mSortByView.setText(filters.getOrderDescription(this));
+
+        // Save filters
+        mViewModel.setFilters(filters);
+    }
+
+    public void onFilterClicked(View view) {
+        // Show the dialog containing filter options
+        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
+    }
+
+    @Override
     public void onPostSelected(DocumentSnapshot post) {
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(this, PostActivity.class);
+        // TODO: Remember to uncomment
 //        intent.putExtra(PostActivity.KEY_POST_ID, post.getId());
 
         startActivity(intent);

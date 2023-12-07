@@ -8,41 +8,45 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 public class Post {
 
     public static final String FIELD_DATE_TIME = "dateTime";
-    public static final String FIELD_IS_PUBLIC = "isPublic";
     public static final String FIELD_LOCATION_COORDS = "locationCoords";
     public static final String FIELD_LOCATION_NAME = "locationName";
     public static final String FIELD_MET_PERSON = "metPerson";
     public static final String FIELD_PHOTO = "photo";
     public static final String FIELD_POINTS = "points";
     public static final String FIELD_POSTER = "poster";
+    public static final String FIELD_POSTER_UID = "posterUID";
+    public static final String FIELD_VISIBILITY = "visibility";
 
     private Timestamp dateTime;
-    private boolean isPublic;
     private GeoPoint locationCoords;
     private String locationName;
     private String metPerson;
     private String photo;
     private int points;
     private String poster;
+    private String posterUID;
+    private String visibility;
 
     public Post() {}
 
     public Post(Timestamp dateTime,
-                boolean isPublic,
                 GeoPoint locationCoords,
                 String locationName,
                 String metPerson,
                 String photo,
                 int points,
-                String poster) {
+                String poster,
+                String posterUID,
+                String visibility) {
         this.dateTime = dateTime;
-        this.isPublic = isPublic;
         this.locationCoords = locationCoords;
         this.locationName = locationName;
         this.metPerson = metPerson;
         this.photo = photo;
         this.points = points;
         this.poster = poster;
+        this.posterUID = posterUID;
+        this.visibility = visibility;
     }
 
     public Timestamp getDateTime() {
@@ -50,13 +54,6 @@ public class Post {
     }
     public void setDateTime(Timestamp dateTime) {
         this.dateTime = dateTime;
-    }
-
-    public boolean getIsPublic() {
-        return isPublic;
-    }
-    public void setIsPublic(boolean isPublic) {
-        this.isPublic = isPublic;
     }
 
     public GeoPoint getLocationCoords() {
@@ -99,5 +96,19 @@ public class Post {
     }
     public void setPoster(String poster) {
         this.poster = poster;
+    }
+
+    public String getPosterUID() {
+        return posterUID;
+    }
+    public void setPosterUID(String posterUID) {
+        this.posterUID = posterUID;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
     }
 }
