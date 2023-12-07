@@ -19,7 +19,10 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,7 +48,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     private static final String[] DESIRED_PERMISSIONS = {Manifest.permission.CAMERA};
     private static final int PERMISSION_REQUEST_CODE = 1;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "GeoCamera";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
@@ -78,11 +81,43 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     ContentValues contentValues;
     ImageCapture.OutputFileOptions outputFileOptions;
 
+    //In App Storage path to the photo
+    File directory;
+    File myFile;
+
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
+    String preference_file_key = "num_pics";
+
+
+
+    // Storing the key and its value as the data fetched from edittext
+
+     private int numPics = 0;
+
+    /**
+     * Use SharedPref to save how many photos I have saved to ensure that I can easily make a new one each time.
+     */
+    private void readNumPics() {
+        this.numPics = sharedPref.getInt(preference_file_key, 0);
+        Log.d(TAG, "readNumPics: numPics: "+ numPics);
+    }
+
+    /**
+     * Read SharedPref
+     */
+    private void editNumPics() {
+        Log.d(TAG, "editNumPics: numPics: " + numPics);
+        editor.putInt(preference_file_key, numPics);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        readNumPics();
 
         /**
          * Buttons
@@ -109,6 +144,9 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
          * Write Photo to file
          */
         photosDir = getExternalFilesDir(DIRECTORY_PICTURES);
+
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
     }
 
     @Override
@@ -131,7 +169,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     ImageCapture.OnImageSavedCallback imageSavedCallback = new ImageCapture.OnImageSavedCallback() {
         @Override
         public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+            numPics += 1;
+            editNumPics();
             Log.d(TAG, "onImageSaved: File Saved: " + outputFileResults.getSavedUri());
+            Log.d(TAG, "onImageSaved: File Name:" + numPics);
         }
 
         @Override
@@ -141,13 +182,27 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     };
 
     private void takePhoto() {
+
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        myFile = new File(directory, "NEW_IMAGE" + numPics + ".jpg");
+
+
+        //what to call it.
         contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "NEW_IMAGE");
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "gCache_img_" + numPics);
         contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+
+//        Save the photo to gallery.
         outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
                 getContentResolver(),
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 contentValues).build();
+
+        //Save to app local file
+//        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile).build();
 
 
         ProcessCameraProvider cameraProvider = null;
@@ -201,8 +256,8 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
         cameraProviderFuture.addListener(() -> {
             try {
-                 cameraProvider = cameraProviderFuture.get();
-                 bindPreview(cameraProvider);
+                cameraProvider = cameraProviderFuture.get();
+                bindPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
                 // This should never be reached.
@@ -294,11 +349,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         Camera capCam = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
 
 
-
-
-
     }
-
 
 
 }
