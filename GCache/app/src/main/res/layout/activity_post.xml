@@ -6,4 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".PostActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="60"
+            android:id="@+id/imageCaptureView"
+            android:src="@color/colorPrimaryDark">
+        </ImageView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="40">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No File Path Provided"
+                android:id="@+id/filePathTextView">
+
+            </TextView>
+
+        </LinearLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

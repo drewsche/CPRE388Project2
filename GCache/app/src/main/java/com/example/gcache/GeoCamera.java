@@ -10,6 +10,7 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -117,8 +119,6 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        readNumPics();
-
         /**
          * Buttons
          */
@@ -166,13 +166,29 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+//    ImageCapture.OnImageCapturedCallback imageCapturedCallback = new ImageCapture.OnImageCapturedCallback() {
+//        @Override
+//        public void onCaptureSuccess(@NonNull ImageProxy image) {
+//            super.onCaptureSuccess(image);
+//            Intent imageProxySender = new Intent(GeoCamera.this, PostActivity.class);
+//            imageProxySender.putExtra("imageMemory", image);
+//        }
+//
+//        @Override
+//        public void onError(@NonNull ImageCaptureException exception) {
+//            super.onError(exception);
+//        }
+//    };
+
     ImageCapture.OnImageSavedCallback imageSavedCallback = new ImageCapture.OnImageSavedCallback() {
         @Override
         public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-            numPics += 1;
-            editNumPics();
+
             Log.d(TAG, "onImageSaved: File Saved: " + outputFileResults.getSavedUri());
-            Log.d(TAG, "onImageSaved: File Name:" + numPics);
+            //Shuttle user to the Post Screen
+            Intent toPost = new Intent(GeoCamera.this, PostActivity.class);
+            toPost.putExtra("filePathToImage", outputFileResults.getSavedUri().toString());
+            startActivity(toPost);
         }
 
         @Override
@@ -183,26 +199,30 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     private void takePhoto() {
 
+        /**
+         * Save the photo to a local file.
+         */
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
         directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        myFile = new File(directory, "NEW_IMAGE" + numPics + ".jpg");
+        myFile = new File(directory, "gCache_img" + ".jpg");
+        //Tells the output file to save to local file.
+        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile).build();
 
 
-        //what to call it.
-        contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "gCache_img_" + numPics);
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+        /**
+         * Save the photo to gallery.
+         */
+//        contentValues = new ContentValues();
+//        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "gCache_img_");
+//        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+//
+////        Save the photo to gallery.
+//        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
+//                getContentResolver(),
+//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                contentValues).build();
 
-//        Save the photo to gallery.
-        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
-                getContentResolver(),
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues).build();
 
-        //Save to app local file
-//        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile).build();
 
 
         ProcessCameraProvider cameraProvider = null;
@@ -215,22 +235,20 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
 
 
-//        CameraSelector cameraSelector = new CameraSelector.Builder()
-//                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-//                .build();
-
-
         ImageCapture imageCapture =
                 new ImageCapture.Builder()
                         .setTargetRotation(previewView.getDisplay().getRotation())
                         .build();
-//        Do this step like it is below.
         Camera capCam = cameraProvider.bindToLifecycle(this, cameraSelector, imageCapture);
 
-
+        /**
+         * Save image to file
+         */
         imageCapture.takePicture(outputFileOptions,
                 ContextCompat.getMainExecutor(this),
                 imageSavedCallback);
+
+
 
     }
 
@@ -328,6 +346,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private void switchLens() {
         Log.d(TAG, "switchLens: is not currently working :(");
 
@@ -336,9 +355,17 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
         preview = new Preview.Builder().build();
 
-        cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                .build();
+        if(cameraSelector.getLensFacing() == CameraSelector.LENS_FACING_FRONT) {
+            cameraSelector = new CameraSelector.Builder()
+                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                    .build();
+        } else {
+            cameraSelector = new CameraSelector.Builder()
+                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                    .build();
+        }
+
+
 
         ImageCapture imageCapture =
                 new ImageCapture.Builder()
