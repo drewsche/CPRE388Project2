@@ -29,9 +29,7 @@
         <activity
             android:name=".AlbumActivity"
             android:exported="false" />
-        <activity
-            android:name=".GeoCameraFront"
-            android:exported="false" />
+
         <activity
             android:name=".PostActivity"
             android:exported="false" />

@@ -39,34 +39,32 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 
 
 public class GeoCamera extends AppCompatActivity implements View.OnClickListener {
 
+    //Permissions
     private static final String[] DESIRED_PERMISSIONS = {Manifest.permission.CAMERA};
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String TAG = "GeoCamera";
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    //Camera Setup
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-
-    private Queue imageQ;
-
-    private ImageView imageView;
-
     private PreviewView previewView;
-
     private Button cameraBackToMain;
-
     private Button shutterButton;
-
-    private File photosDir;
     private String currentPhotoPath;
-
     private Button switchLens;
 
     /**
@@ -83,14 +81,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     ContentValues contentValues;
     ImageCapture.OutputFileOptions outputFileOptions;
 
-    //In App Storage path to the photo
-    File directory;
-    File myFile;
 
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
-
-    String preference_file_key = "num_pics";
 
 
 
@@ -98,21 +89,6 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
      private int numPics = 0;
 
-    /**
-     * Use SharedPref to save how many photos I have saved to ensure that I can easily make a new one each time.
-     */
-    private void readNumPics() {
-        this.numPics = sharedPref.getInt(preference_file_key, 0);
-        Log.d(TAG, "readNumPics: numPics: "+ numPics);
-    }
-
-    /**
-     * Read SharedPref
-     */
-    private void editNumPics() {
-        Log.d(TAG, "editNumPics: numPics: " + numPics);
-        editor.putInt(preference_file_key, numPics);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,13 +116,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         checkPermissions();
         checkPermissions();
 
-        /**
-         * Write Photo to file
-         */
-        photosDir = getExternalFilesDir(DIRECTORY_PICTURES);
 
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
     }
 
     @Override
@@ -166,29 +136,20 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-//    ImageCapture.OnImageCapturedCallback imageCapturedCallback = new ImageCapture.OnImageCapturedCallback() {
-//        @Override
-//        public void onCaptureSuccess(@NonNull ImageProxy image) {
-//            super.onCaptureSuccess(image);
-//            Intent imageProxySender = new Intent(GeoCamera.this, MakePostActivity.class);
-//            imageProxySender.putExtra("imageMemory", image);
-//        }
-//
-//        @Override
-//        public void onError(@NonNull ImageCaptureException exception) {
-//            super.onError(exception);
-//        }
-//    };
 
     ImageCapture.OnImageSavedCallback imageSavedCallback = new ImageCapture.OnImageSavedCallback() {
         @Override
         public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
 
             Log.d(TAG, "onImageSaved: File Saved: " + outputFileResults.getSavedUri());
+            Log.d(TAG, "onImageSaved: that but string: " + outputFileResults.getSavedUri().toString());
             //Shuttle user to the Make Post Screen
             Intent toMakePost = new Intent(GeoCamera.this, MakePostActivity.class);
             toMakePost.putExtra("filePathToImage", outputFileResults.getSavedUri().toString());
             startActivity(toMakePost);
+
+            String[] files = GeoCamera.this.fileList();
+            Log.d(TAG, "onImageSaved: files" + Arrays.toString(files));
         }
 
         @Override
@@ -202,25 +163,34 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         /**
          * Save the photo to a local file.
          */
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        myFile = new File(directory, "gCache_img" + ".jpg");
-        //Tells the output file to save to local file.
-        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile).build();
+//        File myFile2 = new File(this.getFilesDir(), "gCache_img");
+//        Log.d(TAG, "takePhoto: file saved to: " + myFile2.getAbsolutePath());
+//        String filename = "myfile2";
+//        String fileContents = "Hello world!";
+//        try (FileOutputStream fos = this.openFileOutput(filename, Context.MODE_PRIVATE)) {
+//            fos.write(fileContents.getBytes());
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile2).build();
+
+
 
 
         /**
          * Save the photo to gallery.
          */
-//        contentValues = new ContentValues();
-//        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "gCache_img_");
-//        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-//
-////        Save the photo to gallery.
-//        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
-//                getContentResolver(),
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                contentValues).build();
+        contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "gCache_img_");
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+
+//        Save the photo to gallery.
+        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
+                getContentResolver(),
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues).build();
 
 
 
@@ -307,48 +277,9 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Log.d(TAG, "dispatchTakePictureIntent: Error creating file");
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
 
     @SuppressLint("RestrictedApi")
     private void switchLens() {
-        Log.d(TAG, "switchLens: is not currently working :(");
 
         cameraProvider.unbindAll();
 
