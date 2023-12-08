@@ -61,9 +61,9 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-//        testing();
+        testing();
 
-        demo();
+//        demo();
 
     }
 
@@ -77,13 +77,18 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
 
         Intent getHere = getIntent();
         String filePath = getHere.getStringExtra("filePathToImage");
+        Uri myUri = Uri.parse(filePath);
         Log.d(TAG, "onCreate: filePath: " + filePath);
-        filePathTextView.setText(filePath);
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
-        if(filePath != null) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(myUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             imageCapture.setImageBitmap(bitmap);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override

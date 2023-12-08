@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="50"
-            android:src="@color/colorPrimaryDark"></ImageView>
+            android:src="@color/colorPrimaryDark">
+        </ImageView>
 
 
 
