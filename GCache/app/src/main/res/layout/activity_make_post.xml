@@ -15,22 +15,106 @@
             android:id="@+id/imageCaptureView"
             android:layout_width="match_parent"
             android:layout_height="0sp"
-            android:layout_weight="60"
+            android:layout_weight="50"
             android:src="@color/colorPrimaryDark"></ImageView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="40">
+
 
             <TextView
                 android:id="@+id/filePathTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0sp"
+                android:layout_weight="1"
                 android:text="No File Path Provided">
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name: "
+                android:textSize="24dp">
 
             </TextView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="10"
+                android:hint="Enter Name">
+            </EditText>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location: "
+            android:textSize="24dp">
+
+        </TextView>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="10"
+            android:hint="Enter Location">
+        </EditText>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Roll For A Question"
+            android:textSize="24dp">
+        </Button>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Press the button above to generate a question to start a conversation."
+            android:textSize="24dp">
+        </TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#000000"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="10"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="Points: "
+                android:textSize="24dp">
+            </TextView>
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:id="@+id/displayPointsPost"
+                android:text="0 Points"
+                android:textSize="24dp">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="10">
+            <Button
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="Post Public">
+            </Button>
+            <Button
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="Save Private">
+            </Button>
 
         </LinearLayout>
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
