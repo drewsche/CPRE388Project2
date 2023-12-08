@@ -1,6 +1,7 @@
 package com.example.gcache.model;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
@@ -8,16 +9,17 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 public class Post {
 
     public static final String FIELD_DATE_TIME = "dateTime";
-    public static final String FIELD_LOCATION_COORDS = "locationCoords";
-    public static final String FIELD_LOCATION_NAME = "locationName";
-    public static final String FIELD_MET_PERSON = "metPerson";
-    public static final String FIELD_PHOTO = "photo";
+//    public static final String FIELD_LOCATION_COORDS = "locationCoords";
+//    public static final String FIELD_LOCATION_NAME = "locationName";
+//    public static final String FIELD_MET_PERSON = "metPerson";
+//    public static final String FIELD_PHOTO = "photo";
     public static final String FIELD_POINTS = "points";
-    public static final String FIELD_POSTER = "poster";
-    public static final String FIELD_POSTER_UID = "posterUID";
-    public static final String FIELD_VISIBILITY = "visibility";
+//    public static final String FIELD_POSTER = "poster";
+//    public static final String FIELD_POSTER_UID = "posterUID";
+//    public static final String FIELD_VISIBILITY = "visibility";
 
     private Timestamp dateTime;
+    private double distance;
     private GeoPoint locationCoords;
     private String locationName;
     private String metPerson;
@@ -30,22 +32,23 @@ public class Post {
     public Post() {}
 
     public Post(Timestamp dateTime,
+                double distance,
                 GeoPoint locationCoords,
                 String locationName,
                 String metPerson,
                 String photo,
                 int points,
-                String poster,
-                String posterUID,
+                FirebaseUser user,
                 String visibility) {
         this.dateTime = dateTime;
+        this.distance = distance;
         this.locationCoords = locationCoords;
         this.locationName = locationName;
         this.metPerson = metPerson;
         this.photo = photo;
         this.points = points;
-        this.poster = poster;
-        this.posterUID = posterUID;
+        this.poster = user.getDisplayName();
+        this.posterUID = user.getUid();
         this.visibility = visibility;
     }
 
@@ -54,6 +57,13 @@ public class Post {
     }
     public void setDateTime(Timestamp dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public GeoPoint getLocationCoords() {

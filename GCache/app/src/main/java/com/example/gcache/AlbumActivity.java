@@ -167,8 +167,7 @@ public class AlbumActivity extends AppCompatActivity implements
     public void onPostSelected(DocumentSnapshot post) {
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(this, PostActivity.class);
-        // TODO: Remember to uncomment
-//        intent.putExtra(PostActivity.KEY_POST_ID, post.getId());
+        intent.putExtra(PostActivity.KEY_POST_ID, post.getId());
 
         startActivity(intent);
     }

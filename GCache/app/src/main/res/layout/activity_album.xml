@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
-                android:background="#40000000"
+                android:background="@color/lightGray2"
                 android:paddingStart="5dp"
                 android:text="Error"
                 android:textColor="#000000" />
@@ -56,7 +56,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:background="#80000000"
+                android:background="@color/gray"
                 android:onClick="onFilterClicked"
                 app:srcCompat="@drawable/filter" />
 
@@ -78,6 +78,7 @@
                 android:id="@+id/albumActivity_recyclerView_albumPosts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/darkGray2"
                 android:visibility="visible"
                 tools:visibility="visible" />
 
