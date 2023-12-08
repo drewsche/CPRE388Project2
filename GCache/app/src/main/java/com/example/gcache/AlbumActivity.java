@@ -11,9 +11,10 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gcache.adapter.PostAdapter;
-import com.example.gcache.viewmodel.PublicActivityViewModel;
+import com.example.gcache.viewmodel.AlbumActivityViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,17 +23,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-public class PublicActivity extends AppCompatActivity implements
+public class AlbumActivity extends AppCompatActivity implements
 //        View.OnClickListener,
         FilterDialogFragment.FilterListener,
         PostAdapter.OnPostSelectedListener {
 
-    private static final String TAG = "PublicActivity";
+    private static final String TAG = "AlbumActivity";
     private static final int LIMIT = 50;
 
     private TextView mContentView;
     private TextView mSortByView;
-    private RecyclerView publicPostsRecycler;
+    private RecyclerView albumPostsRecycler;
     private TextView mEmptyView;
 
     private FirebaseFirestore mFirestore;
@@ -42,19 +43,19 @@ public class PublicActivity extends AppCompatActivity implements
 
     private PostAdapter mAdapter;
 
-    private PublicActivityViewModel mViewModel;
+    private AlbumActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_public);
+        setContentView(R.layout.activity_album);
 
-        mContentView = findViewById(R.id.publicActivity_textView_contents);
-        mSortByView = findViewById(R.id.publicActivity_textView_sortBy);
-        publicPostsRecycler = findViewById(R.id.postActivity_recyclerView_questions);
-        mEmptyView = findViewById(R.id.publicActivity_textView_noResults);
+        mContentView = findViewById(R.id.albumActivity_textView_contents);
+        mSortByView = findViewById(R.id.albumActivity_textView_sortBy);
+        albumPostsRecycler = findViewById(R.id.albumActivity_recyclerView_albumPosts);
+        mEmptyView = findViewById(R.id.albumActivity_textView_noResults);
 
-        mViewModel = new ViewModelProvider(this).get(PublicActivityViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(AlbumActivityViewModel.class);
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
@@ -68,25 +69,8 @@ public class PublicActivity extends AppCompatActivity implements
 
         // Filter Dialog
         mFilterDialog = new FilterDialogFragment();
-
-        checkCurrentUser();
     }
 
-    public void checkCurrentUser() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-//            Toast.makeText(MainActivity.this, "<!!DEVELOPER TOOL!!>" +
-////                    " UID:\n" + user.getUid(),
-////                    " Display Name:\n" + user.getDisplayName(),
-//                    " E-mail:\n" + user.getEmail(),
-//                    Toast.LENGTH_LONG).show();
-        } else {
-            // No user is signed in
-            Intent toLogin = new Intent(this, LoginActivity.class);
-            startActivity(toLogin);
-        }
-    }
 
     private void initRecyclerView() {
         if (mQuery == null) {
@@ -99,10 +83,10 @@ public class PublicActivity extends AppCompatActivity implements
             protected void onDataChanged() {
                 // Show/hide content if the query returns empty.
                 if (getItemCount() == 0) {
-                    publicPostsRecycler.setVisibility(View.GONE);
+                    albumPostsRecycler.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 } else {
-                    publicPostsRecycler.setVisibility(View.VISIBLE);
+                    albumPostsRecycler.setVisibility(View.VISIBLE);
                     mEmptyView.setVisibility(View.GONE);
                 }
             }
@@ -115,8 +99,8 @@ public class PublicActivity extends AppCompatActivity implements
             }
         };
 
-        publicPostsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        publicPostsRecycler.setAdapter(mAdapter);
+        albumPostsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        albumPostsRecycler.setAdapter(mAdapter);
     }
 
     @Override
@@ -142,7 +126,8 @@ public class PublicActivity extends AppCompatActivity implements
 
     @Override
     public void onFilter(Filters filters) {
-        filters.setVisibility("Public");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        filters.setPosterUID(user.getUid());
         Query query = mFirestore.collection("posts"); //hint: CollectionReference extends Query
 
         if(filters.hasPosterUID()) {
@@ -188,14 +173,14 @@ public class PublicActivity extends AppCompatActivity implements
     }
 
     public void onCameraClicked(View view) {
-            Log.d(TAG, "onClick: called");
-            Intent toCamera = new Intent(this, GeoCamera.class);
-            startActivity(toCamera);
+        Log.d(TAG, "onClick: called");
+        Intent toCamera = new Intent(this, GeoCamera.class);
+        startActivity(toCamera);
     }
 
-    public void onAlbumClicked(View view) {
-        Intent toAlbum = new Intent(this, AlbumActivity.class);
-        startActivity(toAlbum);
+    public void onPublicClicked(View view) {
+        Intent toPublic = new Intent(this, PublicActivity.class);
+        startActivity(toPublic);
     }
     public void onMapsClicked(View v) {
         Intent toMaps = new Intent(this, MapsActivity.class);
