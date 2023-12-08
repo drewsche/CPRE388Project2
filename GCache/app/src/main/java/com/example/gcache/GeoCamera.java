@@ -170,7 +170,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 //        @Override
 //        public void onCaptureSuccess(@NonNull ImageProxy image) {
 //            super.onCaptureSuccess(image);
-//            Intent imageProxySender = new Intent(GeoCamera.this, PostActivity.class);
+//            Intent imageProxySender = new Intent(GeoCamera.this, MakePostActivity.class);
 //            imageProxySender.putExtra("imageMemory", image);
 //        }
 //
@@ -185,10 +185,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
 
             Log.d(TAG, "onImageSaved: File Saved: " + outputFileResults.getSavedUri());
-            //Shuttle user to the Post Screen
-            Intent toPost = new Intent(GeoCamera.this, PostActivity.class);
-            toPost.putExtra("filePathToImage", outputFileResults.getSavedUri().toString());
-            startActivity(toPost);
+            //Shuttle user to the Make Post Screen
+            Intent toMakePost = new Intent(GeoCamera.this, MakePostActivity.class);
+            toMakePost.putExtra("filePathToImage", outputFileResults.getSavedUri().toString());
+            startActivity(toMakePost);
         }
 
         @Override
