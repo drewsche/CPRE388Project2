@@ -72,6 +72,7 @@ public class AccountActivity extends AppCompatActivity {
         startActivity(toPublic);
     }
 
+    //After signing out, takes you back to login page
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
     }
