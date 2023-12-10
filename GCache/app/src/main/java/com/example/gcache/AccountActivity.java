@@ -21,8 +21,8 @@ public class AccountActivity extends AppCompatActivity {
     private static final String TAG = "AccountActivity";
 
     private FirebaseUser user;
-
     private EditText displayNameEditText;
+    private EditText homeLocationEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class AccountActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         displayNameEditText = findViewById(R.id.accountActivity_editText_displayName);
         displayNameEditText.setText(user.getDisplayName());
+        homeLocationEditText = findViewById(R.id.accountActivity_editText_homeLocation);
     }
 
     public void onSaveDisplayNameClicked(View view) {
@@ -50,6 +51,12 @@ public class AccountActivity extends AppCompatActivity {
                 });
         Toast.makeText(AccountActivity.this, "New Display Name Saved!",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    public void onSaveHomeClicked(View view) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(homeLocationEditText.getText().toString())
+                .build();
     }
 
     public void onAlbumClicked(View view) {

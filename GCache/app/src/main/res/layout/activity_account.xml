@@ -130,27 +130,32 @@
                 android:layout_width="275dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginBottom="232dp"
                 android:ems="10"
                 android:hint="Home Location"
                 android:inputType="text"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toStartOf="@+id/button_homeLocation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_homeLocation" />
 
             <Button
                 android:id="@+id/button_homeLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginStart="292dp"
                 android:layout_marginTop="56dp"
                 android:backgroundTint="#8BC34A"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:onClick="onSaveDisplayNameClicked"
+                android:onClick="onSaveHomeClicked"
                 android:text="Save"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 app:cornerRadius="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/accountActivity_editText_homeLocation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.948"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button1" />
 
