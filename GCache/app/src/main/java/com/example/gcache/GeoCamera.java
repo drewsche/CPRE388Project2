@@ -145,7 +145,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
             Log.d(TAG, "onImageSaved: that but string: " + outputFileResults.getSavedUri().toString());
             //Shuttle user to the Make Post Screen
             Intent toMakePost = new Intent(GeoCamera.this, MakePostActivity.class);
-            toMakePost.putExtra("filePathToImage", outputFileResults.getSavedUri().toString());
+            toMakePost.putExtra(MakePostActivity.KEY_PHOTO_URI, outputFileResults.getSavedUri().toString());
             startActivity(toMakePost);
 
             String[] files = GeoCamera.this.fileList();
