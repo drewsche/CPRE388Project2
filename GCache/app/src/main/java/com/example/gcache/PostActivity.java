@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -127,10 +130,21 @@ public class PostActivity extends AppCompatActivity implements
 
     private void onPostLoaded(Post post) {
 
-        // Photo image
-        Glide.with(photoImageView.getContext())
-                .load(post.getPhoto())
-                .into(photoImageView);
+        String photoString = post.getPhoto();
+        if(isBase64(photoString)) {
+            // Decode the base64 string to a Bitmap
+            Bitmap bitmap = decodeBase64(photoString);
+            // Display the Bitmap using Glide
+            Glide.with(photoImageView.getContext())
+                    .load(bitmap)
+                    .into(photoImageView);
+        }
+        else {
+            // Load photo
+            Glide.with(photoImageView.getContext())
+                    .load(photoString)
+                    .into(photoImageView);
+        }
 
         Timestamp tempDateTime = post.getDateTime();
         whoWhenTextView.setText(post.getPoster() + " met " + post.getMetPerson() +
@@ -141,6 +155,25 @@ public class PostActivity extends AppCompatActivity implements
         int tempDistancePoints = (int) ((Math.ceil(post.getDistance())) * 5);
         distancePointsTextView.setText("+" + tempDistancePoints + " Points");
         aboutMetPersonTextView.setText("About " + post.getMetPerson() + ":");
+    }
+
+    public static boolean isBase64(String str) {
+        try {
+            // Decode the string to check for errors
+            byte[] decodedBytes = Base64.decode(str, Base64.DEFAULT);
+            // Encode the decoded bytes to check for round-trip consistency
+            String reencodedStr = Base64.encodeToString(decodedBytes, Base64.DEFAULT);
+            // Check if the re-encoded string matches the original string
+            return str.equals(reencodedStr);
+        } catch (IllegalArgumentException e) {
+            // An exception occurred during decoding, indicating that the string is not base64-encoded
+            return false;
+        }
+    }
+
+    private Bitmap decodeBase64(String base64String) {
+        byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
     public void onAlbumClicked(View view) {

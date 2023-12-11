@@ -14,11 +14,13 @@ import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,6 +43,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,6 +122,8 @@ public class MakePostActivity extends AppCompatActivity {
 
         String photoUriString = getIntent().getExtras().getString(KEY_PHOTO_URI);
         if (photoUriString == null) {
+            Toast.makeText(MakePostActivity.this, "Photo not passed from camera",
+                    Toast.LENGTH_SHORT).show();
             throw new IllegalArgumentException("Must pass extra " + KEY_PHOTO_URI);
         }
 
@@ -256,6 +261,8 @@ public class MakePostActivity extends AppCompatActivity {
                 post.setLocationCoords(lastLocationCoords);
                 post.setLocationName(locationNameTextView.getText().toString());
                 post.setMetPerson(metPersonTextView.getText().toString());
+//                String photoString = convertPhotoToBitmapString();
+//                post.setPhoto(photoString);
                 post.setPhoto("https://raw.githubusercontent.com/julien-gargot/images-placeholder/master/placeholder-portrait.png");
                 post.setPoints(pointTotal);
                 post.setPoster(user.getDisplayName());
@@ -268,6 +275,23 @@ public class MakePostActivity extends AppCompatActivity {
             }
         });
     }
+
+//    private String convertBitmapToString(Bitmap bitmap) {
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+//        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+//    }
+
+//    private String convertPhotoToBitmapString() {
+//        // Get the Bitmap from ImageView
+//        Bitmap bitmap = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+//
+//        // Convert Bitmap to Base64-encoded String
+//        String imageString = convertBitmapToString(bitmap);
+//
+//        return imageString;
+//    }
 
     public void onPhotoClicked(View view) {
         openMediaPicker();

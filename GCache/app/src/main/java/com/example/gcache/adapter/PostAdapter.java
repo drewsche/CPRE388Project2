@@ -1,6 +1,9 @@
 package com.example.gcache.adapter;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,10 +76,21 @@ public class PostAdapter extends FirestoreAdapter<PostAdapter.ViewHolder> {
             Post post = snapshot.toObject(Post.class);
             Resources resources = itemView.getResources();
 
-            // Load photo
-            Glide.with(photoView.getContext())
-                    .load(post.getPhoto())
-                    .into(photoView);
+            String photoString = post.getPhoto();
+            if(isBase64(photoString)) {
+                // Decode the base64 string to a Bitmap
+                Bitmap bitmap = decodeBase64(photoString);
+                // Display the Bitmap using Glide
+                Glide.with(photoView.getContext())
+                        .load(bitmap)
+                        .into(photoView);
+            }
+            else {
+                // Load photo
+                Glide.with(photoView.getContext())
+                        .load(photoString)
+                        .into(photoView);
+            }
 
             Timestamp tempDateTime = post.getDateTime();
             dateTimeView.setText("On " + tempDateTime.toDate());
@@ -108,6 +122,25 @@ public class PostAdapter extends FirestoreAdapter<PostAdapter.ViewHolder> {
                     }
                 }
             });
+        }
+
+        public static boolean isBase64(String str) {
+            try {
+                // Decode the string to check for errors
+                byte[] decodedBytes = Base64.decode(str, Base64.DEFAULT);
+                // Encode the decoded bytes to check for round-trip consistency
+                String reencodedStr = Base64.encodeToString(decodedBytes, Base64.DEFAULT);
+                // Check if the re-encoded string matches the original string
+                return str.equals(reencodedStr);
+            } catch (IllegalArgumentException e) {
+                // An exception occurred during decoding, indicating that the string is not base64-encoded
+                return false;
+            }
+        }
+
+        private Bitmap decodeBase64(String base64String) {
+            byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
         }
 
     }
