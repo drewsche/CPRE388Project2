@@ -50,7 +50,7 @@ public class AlbumActivity extends AppCompatActivity implements
     private AlbumActivityViewModel mViewModel;
 
     /**
-     * 
+     *
      * @param savedInstanceState
      */
     @Override
