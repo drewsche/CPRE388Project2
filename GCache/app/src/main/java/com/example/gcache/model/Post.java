@@ -47,24 +47,24 @@ public class Post {
      * @param user user's name
      * @param visibility sets if post is public or private
      */
-    public Post(Timestamp dateTime,
-                double distance,
+    public Post(double distance,
                 GeoPoint locationCoords,
                 String locationName,
                 String metPerson,
                 String photo,
                 int points,
-                FirebaseUser user,
+                String poster,
+                String posterUID,
                 String visibility) {
-        this.dateTime = dateTime;
+        this.dateTime = Timestamp.now();
         this.distance = distance;
         this.locationCoords = locationCoords;
         this.locationName = locationName;
         this.metPerson = metPerson;
         this.photo = photo;
         this.points = points;
-        this.poster = user.getDisplayName();
-        this.posterUID = user.getUid();
+        this.poster = poster;
+        this.posterUID = posterUID;
         this.visibility = visibility;
     }
 

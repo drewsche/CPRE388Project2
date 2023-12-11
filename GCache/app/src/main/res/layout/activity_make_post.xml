@@ -229,6 +229,7 @@
                 android:backgroundTint="#E91E63"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:onClick="onPostPrivatelyClicked"
                 android:text="Post Privately"
                 android:textColor="#000000"
                 app:cornerRadius="10dp" />
@@ -244,6 +245,7 @@
                 android:backgroundTint="#2196F3"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:onClick="onPostPubliclyClicked"
                 android:text="Post Publicly"
                 android:textColor="#000000"
                 app:cornerRadius="10dp" />
