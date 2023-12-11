@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +29,14 @@ public class AccountActivity extends AppCompatActivity {
     private FirebaseUser user;
     private EditText displayNameEditText;
     private EditText homeLocationEditText;
+    private TextView totalPointsTextView;
+    private int totalPoints = 0;
 
+    /**
+     * Sets account page and variables, to include edit texts and text views.
+     * Also updates the point display.
+     * @param savedInstanceState State of account page
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +46,11 @@ public class AccountActivity extends AppCompatActivity {
         displayNameEditText = findViewById(R.id.accountActivity_editText_displayName);
         displayNameEditText.setText(user.getDisplayName());
         homeLocationEditText = findViewById(R.id.accountActivity_editText_homeLocation);
+        totalPointsTextView = findViewById(R.id.textView_totalPoints);
+
+        //Update totalPoints TextView with initial total points
+        updatePointsDisplay();
+
     }
 
     /**
@@ -60,6 +73,13 @@ public class AccountActivity extends AppCompatActivity {
                 });
         Toast.makeText(AccountActivity.this, "New Display Name Saved!",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Updates totalPoints TextView with the user's current sum of points
+     */
+    public void updatePointsDisplay() {
+        totalPointsTextView.setText(totalPoints);
     }
 
     /**
