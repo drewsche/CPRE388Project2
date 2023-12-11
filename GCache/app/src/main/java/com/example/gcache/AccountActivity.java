@@ -81,15 +81,15 @@ public class AccountActivity extends AppCompatActivity implements
 //        //Update totalPoints TextView with initial total points
 //        updatePointsDisplay();
 
+        String lat = getIntent().getStringExtra("lat");
+        String lng = getIntent().getStringExtra("lng");
+        String coords = lat + "," + lng;
 
-            String lat = getIntent().getStringExtra("lat");
-            String lng = getIntent().getStringExtra("lng");
-            String coords = lat + "," + lng;
+        if(lat != null && lng != null) {
+            homeLocationEditText.setText(coords);
+        }
 
-            if(lat != null && lng != null) {
-                homeLocationEditText.setText(coords);
-                //Do firebase transaction
-            }
+
 
     }
 
@@ -193,19 +193,36 @@ public class AccountActivity extends AppCompatActivity implements
      * @param view The view that shows user home location
      */
     public void onSaveHomeClicked(View view) {
+        String lat = getIntent().getStringExtra("lat");
+        String lng = getIntent().getStringExtra("lng");
+        String coords = lat + "," + lng;
+
+        if(lat != null && lng != null) {
+//            homeLocationEditText.setText(coords);
+            //Do firebase transaction
+            GeoPoint geoPoint = new GeoPoint(Double.valueOf(lat), Double.valueOf(lng));
+            Log.d(TAG, "onSaveHomeClicked: called Lat: " + lat + "Lng: " + lng);
+            changeHomeCity(mUserRef, geoPoint);
+        } else {
+            //Fail Toast
+        }
+
+    }
+    public void onUpdateHomeClicked(View view) {
         // TODO: Save the location city string to firebase
         String homeCity = String.valueOf(homeLocationEditText.getText());
         Log.d(TAG, "onSaveHomeClicked: homeCity: " + homeCity);
         Intent confirmCity = new Intent(this, MapsActivity.class).putExtra("cityName", homeCity);
         startActivity(confirmCity);
-        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
 
-        changeHomeCity(mUserRef, geoPoint);
     }
 
 
 
     private Task<Void> changeHomeCity(final DocumentReference userRef, final GeoPoint newHomeCity) {
+        Log.d(TAG, "changeHomeCity: called");
+        Log.d(TAG, "changeHomeCity: Lat" + newHomeCity.getLatitude() + "Lng: "+ newHomeCity.getLongitude());
+        Log.d(TAG, "changeHomeCity: userRef" + userRef.getId());
         return mFirestore.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void apply(Transaction transaction)

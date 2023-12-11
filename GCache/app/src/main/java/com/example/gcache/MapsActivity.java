@@ -139,6 +139,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarke
                                 mMap.addMarker(new MarkerOptions()
                                         .position(curLatLng)
                                         .title("CurrentLocation")
+                                        .draggable(true)
                                         .zIndex(1.0f));
                                 mMap.setOnMarkerClickListener(MapsActivity.this);
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatLng, zoomLevel));

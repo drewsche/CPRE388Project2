@@ -17,6 +17,22 @@
             android:layout_weight="1">
 
             <Button
+                android:id="@+id/button_updateHomeLocation"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:backgroundTint="#8BC34A"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onUpdateHomeClicked"
+                android:text="Update Home Location"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:cornerRadius="10sp"
+                app:layout_constraintTop_toBottomOf="@+id/accountActivity_editText_homeLocation"
+                tools:layout_editor_absoluteX="160dp" />
+
+
+            <Button
                 android:id="@+id/button_homeLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
