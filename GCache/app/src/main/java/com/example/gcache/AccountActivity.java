@@ -80,6 +80,17 @@ public class AccountActivity extends AppCompatActivity implements
 
 //        //Update totalPoints TextView with initial total points
 //        updatePointsDisplay();
+
+
+            String lat = getIntent().getStringExtra("lat");
+            String lng = getIntent().getStringExtra("lng");
+            String coords = lat + "," + lng;
+
+            if(lat != null && lng != null) {
+                homeLocationEditText.setText(coords);
+                //Do firebase transaction
+            }
+
     }
 
     @Override
@@ -185,26 +196,25 @@ public class AccountActivity extends AppCompatActivity implements
         // TODO: Save the location city string to firebase
         String homeCity = String.valueOf(homeLocationEditText.getText());
         Log.d(TAG, "onSaveHomeClicked: homeCity: " + homeCity);
-//        Intent confirmCity = new Intent(this, MapsActivity.class).putExtra("cityName", homeCity);
-//        startActivity(confirmCity);
-        changeHomeCity(mUserRef, displayNameEditText.getText().toString())
+        Intent confirmCity = new Intent(this, MapsActivity.class).putExtra("cityName", homeCity);
+        startActivity(confirmCity);
+        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
 
-
-
+        changeHomeCity(mUserRef, geoPoint);
     }
 
-    private Task<Void> changeHomeCity(final DocumentReference userRef, final String newHomeCity) {
+
+
+    private Task<Void> changeHomeCity(final DocumentReference userRef, final GeoPoint newHomeCity) {
         return mFirestore.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void apply(Transaction transaction)
                     throws FirebaseFirestoreException {
                 User user = transaction.get(userRef)
                         .toObject(User.class);
-                // Set new restaurant info
-                GeoPoint geoPoint = new GeoPoint(latitude, longitude);
-                user.setHome();
+
                 // Commit to Firestore
-                transaction.set(userRef, user);
+                transaction.set(userRef, newHomeCity);
                 return null;
             }
         });

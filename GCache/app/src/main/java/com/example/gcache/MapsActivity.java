@@ -1,16 +1,19 @@
 package com.example.gcache;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -19,13 +22,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.gcache.databinding.ActivityMapsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback{
 
     private static final String TAG = "MapsActivity";
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -72,6 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //TODO: Here we would want to do a lookup in the firebase to see the account location
             //TODO: Make the user pick a home location in the login
             homeString = "Des Moines";
+
+
 //        }
 
     }
@@ -83,6 +89,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d(TAG, "onMapReady: called");
         getCurrentLocation();
         handleHomeAddress();
+    }
+
+    /** Called when the user clicks a marker. */
+    /** Called when the user clicks a marker. */
+    @Override
+    public boolean onMarkerClick(@NonNull final Marker marker) {
+
+        // Retrieve the data from the marker.
+        Log.d(TAG, "onMarkerClick: called");
+
+        Intent backToAccountPage = new Intent(this, AccountActivity.class)
+                .putExtra("lat", Double.toString(marker.getPosition().latitude))
+                .putExtra("lng", Double.toString(marker.getPosition().longitude));
+        startActivity(backToAccountPage);
+
+
+
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false;
     }
 
 
@@ -109,7 +136,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 LatLng curLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                mMap.addMarker(new MarkerOptions().position(curLatLng).title("CurrentLocation"));
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(curLatLng)
+                                        .title("CurrentLocation")
+                                        .zIndex(1.0f));
+                                mMap.setOnMarkerClickListener(MapsActivity.this);
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatLng, zoomLevel));
                                 curLocation = location; //Update State Var
                                 Log.d(TAG, "onSuccess: location marker added");
@@ -162,7 +193,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 ////                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel));
 //
 //                Log.d(TAG, "dropMarkerOnHome: ");
-                
+
             }
         };
         /**
