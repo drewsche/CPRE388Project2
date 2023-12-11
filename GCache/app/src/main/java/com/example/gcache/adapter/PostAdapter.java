@@ -1,6 +1,7 @@
 package com.example.gcache.adapter;
 
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import com.bumptech.glide.Glide;
 import com.example.gcache.R;
 import com.example.gcache.model.Post;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 /**
@@ -78,9 +81,22 @@ public class PostAdapter extends FirestoreAdapter<PostAdapter.ViewHolder> {
             Timestamp tempDateTime = post.getDateTime();
             dateTimeView.setText("On " + tempDateTime.toDate());
             locationNameView.setText("At " + post.getLocationName());
-            String poster = post.getPoster();
-            String metPerson = post.getMetPerson();
-            whoMetWhoView.setText(poster + " met " + metPerson);
+            // Initialize Firestore
+            FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+
+            // Get reference to the user
+            DocumentReference mUserRef = mFirestore.collection("users").document(post.getPosterUID());
+            mUserRef.get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Document exists, retrieve the value of "field1"
+                            String poster = documentSnapshot.getString("displayName");
+                            String metPerson = post.getMetPerson();
+                            whoMetWhoView.setText(poster + " met " + metPerson);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                    });
             pointsView.setText("Points:\n" + post.getPoints());
 
             // Click listener
