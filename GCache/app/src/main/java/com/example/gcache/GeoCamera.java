@@ -145,7 +145,7 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
             Log.d(TAG, "onImageSaved: that but string: " + outputFileResults.getSavedUri().toString());
             //Shuttle user to the Make Post Screen
             Intent toMakePost = new Intent(GeoCamera.this, MakePostActivity.class);
-            toMakePost.putExtra("filePathToImage", outputFileResults.getSavedUri().toString());
+            toMakePost.putExtra(MakePostActivity.KEY_PHOTO_URI, outputFileResults.getSavedUri().toString());
             startActivity(toMakePost);
 
             String[] files = GeoCamera.this.fileList();
@@ -163,34 +163,34 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         /**
          * Save the photo to a local file.
          */
-//        File myFile2 = new File(this.getFilesDir(), "gCache_img");
-//        Log.d(TAG, "takePhoto: file saved to: " + myFile2.getAbsolutePath());
-//        String filename = "myfile2";
-//        String fileContents = "Hello world!";
-//        try (FileOutputStream fos = this.openFileOutput(filename, Context.MODE_PRIVATE)) {
-//            fos.write(fileContents.getBytes());
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile2).build();
+        File myFile2 = new File(this.getFilesDir(), "gCache_img");
+        Log.d(TAG, "takePhoto: file saved to: " + myFile2.getAbsolutePath());
+        String filename = "myfile2";
+        String fileContents = "Hello world!";
+        try (FileOutputStream fos = this.openFileOutput(filename, Context.MODE_PRIVATE)) {
+            fos.write(fileContents.getBytes());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile2).build();
 
 
 
 
-        /**
-         * Save the photo to gallery.
-         */
-        contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "gCache_img_");
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-
-//        Save the photo to gallery.
-        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
-                getContentResolver(),
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues).build();
+//        /**
+//         * Save the photo to gallery.
+//         */
+//        contentValues = new ContentValues();
+//        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "gCache_img_");
+//        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+//
+////        Save the photo to gallery.
+//        outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
+//                getContentResolver(),
+//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                contentValues).build();
 
 
 

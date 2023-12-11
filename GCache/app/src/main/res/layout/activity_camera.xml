@@ -7,55 +7,82 @@
     tools:context=".GeoCamera">
 
     <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/preview_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></androidx.camera.view.PreviewView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:orientation="horizontal"
-            android:layout_weight="85">
-            <androidx.camera.view.PreviewView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/preview_view">
-            </androidx.camera.view.PreviewView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="15"
+            android:layout_height="150dp"
+            android:background="@color/darkGray2"
             android:orientation="horizontal">
-            <Button
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="25"
-                android:id="@+id/buttonCameraBackToMain"
-                android:textSize="24dp"
-                android:text="🏠"
-                >
-            </Button>
 
             <Button
-                android:layout_width="0sp"
+                android:id="@+id/buttonCameraBackToMain"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="50"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginVertical="6dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:backgroundTint="@color/gray"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="🏠"
+                android:textSize="70dp"
+                android:textStyle="bold"
+                app:cornerRadius="999dp"></Button>
+
+            <Button
                 android:id="@+id/buttonTakePhotoShutter"
-                android:textSize="24dp"
-                android:text="📷">
-            </Button>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginVertical="6dp"
+                android:layout_weight="2"
+                android:autoSizeTextType="none"
+                android:backgroundTint="@color/gray"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="📷"
+                android:textSize="70dp"
+                android:textStyle="bold"
+                app:cornerRadius="999dp"></Button>
+
             <Button
                 android:id="@+id/buttonSwitchLens"
-                android:layout_width="0sp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="25"
-                android:textSize="24dp"
-                android:text="↻">
-            </Button>
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginVertical="6dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:backgroundTint="@color/gray"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="↻"
+                android:textColor="#FFFFFF"
+                android:textSize="70dp"
+                android:textStyle="bold"
+                app:cornerRadius="999dp"></Button>
 
         </LinearLayout>
     </LinearLayout>

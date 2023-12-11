@@ -23,6 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
+/**
+ * This class represents the album in which a user can view
+ * their recorded posts on this page.
+ */
 public class AlbumActivity extends AppCompatActivity implements
 //        View.OnClickListener,
         FilterDialogFragment.FilterListener,
@@ -45,6 +49,10 @@ public class AlbumActivity extends AppCompatActivity implements
 
     private AlbumActivityViewModel mViewModel;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
