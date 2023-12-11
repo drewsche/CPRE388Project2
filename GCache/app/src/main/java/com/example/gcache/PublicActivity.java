@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
+/**
+ * This
+ */
 public class PublicActivity extends AppCompatActivity implements
 //        View.OnClickListener,
         FilterDialogFragment.FilterListener,

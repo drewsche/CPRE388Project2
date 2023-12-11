@@ -9,114 +9,324 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/darkGray2"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <ImageView
-            android:id="@+id/imageCaptureView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="50"
-            android:src="@color/colorPrimaryDark">
-        </ImageView>
-
-
+            android:layout_height="wrap_content"
+            android:background="@color/darkGray2">
 
             <TextView
-                android:id="@+id/filePathTextView"
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="1"
-                android:text="No File Path Provided">
-            </TextView>
-            <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/makePostActivity_textView_filePath"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Name: "
-                android:textSize="24dp">
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/makePostActivity_imageView_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/makePostActivity_imageView_photo"
+                app:layout_constraintTop_toTopOf="@+id/makePostActivity_imageView_photo" />
 
-            </TextView>
+            <ImageView
+                android:id="@+id/makePostActivity_imageView_photo"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                android:onClick="onPhotoClicked"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/placeholder_portrait" />
+
+            <TextView
+                android:id="@+id/makePostActivity_textView_pointTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/darkGray1"
+                android:gravity="center"
+                android:paddingHorizontal="5dp"
+                android:text="Point Total:\n0"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/makePostActivity_imageView_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/makePostActivity_textView_filePath" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:autoSizeTextType="uniform"
+                android:paddingLeft="8dp"
+                android:text="Today I Met:"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/makePostActivity_imageView_photo" />
+
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="10"
-                android:hint="Enter Name">
-            </EditText>
+                android:id="@+id/makePostActivity_textView_metPerson"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/darkGray1"
+                android:ems="10"
+                android:gravity="top|left"
+                android:hint="Enter their name here"
+                android:inputType="text"
+                android:paddingVertical="3dp"
+                android:paddingLeft="5dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/lightGray1"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-        <TextView
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:autoSizeTextType="uniform"
+                android:paddingLeft="8dp"
+                android:text="I Met Them At:"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/makePostActivity_textView_metPerson" />
+
+            <EditText
+                android:id="@+id/makePostActivity_textView_locationName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/darkGray1"
+                android:ems="10"
+                android:gravity="top|left"
+                android:hint="Enter location name here"
+                android:inputType="text"
+                android:paddingVertical="3dp"
+                android:paddingLeft="5dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/lightGray1"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <TextView
+                android:id="@+id/makePostActivity_textView_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/darkGray1"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="5dp"
+                android:text="distance Miles From Home"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/makePostActivity_textView_distancePoints"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/makePostActivity_textView_locationName" />
+
+            <TextView
+                android:id="@+id/makePostActivity_textView_distancePoints"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:background="#7DB87F"
+                android:gravity="center"
+                android:paddingHorizontal="5dp"
+                android:text="+000 Points"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/makePostActivity_textView_distance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/makePostActivity_textView_distance" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Auto-calculated based on your current and saved home location.\nOnly the location name you entered will display on your post."
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/makePostActivity_textView_distancePoints"
+                app:layout_constraintStart_toStartOf="@+id/makePostActivity_textView_distance"
+                app:layout_constraintTop_toBottomOf="@+id/makePostActivity_textView_distance" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:autoSizeTextType="uniform"
+                android:paddingLeft="8dp"
+                android:text="Get To Know Them:"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:autoSizeTextType="uniform"
+                android:backgroundTint="#5B817E"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Roll For A Question!"
+                android:textColor="#000000"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/makePostActivity_recyclerView_questions"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView1"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/makePostActivity_recyclerView_questions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location: "
-            android:textSize="24dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/darkGray2"
+            android:visibility="visible"
+            tools:visibility="visible">
 
-        </TextView>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="10"
-            android:hint="Enter Location">
-        </EditText>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Roll For A Question"
-            android:textSize="24dp">
-        </Button>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Press the button above to generate a question to start a conversation."
-            android:textSize="24dp">
-        </TextView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="#000000"
-            android:layout_marginVertical="2dp"/>
-
+        </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="10"
+            android:layout_height="50dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="0sp"
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="50"
-                android:text="Points: "
-                android:textSize="24dp">
-            </TextView>
-            <TextView
-                android:layout_width="0sp"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="2dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:backgroundTint="#E91E63"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Post Privately"
+                android:textColor="#000000"
+                app:cornerRadius="10dp" />
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="50"
-                android:id="@+id/displayPointsPost"
-                android:text="0 Points"
-                android:textSize="24dp">
-            </TextView>
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="2dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:backgroundTint="#2196F3"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Post Publicly"
+                android:textColor="#000000"
+                app:cornerRadius="10dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="10">
-            <Button
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="50"
-                android:text="Post Public">
-            </Button>
-            <Button
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="50"
-                android:text="Save Private">
-            </Button>
+            android:layout_height="100dp"
+            android:background="#000000"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginVertical="6dp"
+                android:layout_weight="1"
+                android:backgroundTint="#9FD1E8"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onAlbumClicked"
+                android:padding="0dp"
+                android:text="ALBUM"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="2dp" />
+
+            <Button
+                android:id="@+id/button11"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginVertical="6dp"
+                android:layout_weight="1"
+                android:backgroundTint="#9FD1E8"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onPublicClicked"
+                android:padding="0dp"
+                android:text="PUBLIC"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="2dp" />
+
+            <Button
+                android:id="@+id/button12"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginVertical="6dp"
+                android:layout_weight="1"
+                android:backgroundTint="#9FD1E8"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onMapsClicked"
+                android:padding="0dp"
+                android:text="MAP"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="2dp" />
+
+            <Button
+                android:id="@+id/button13"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginVertical="6dp"
+                android:layout_weight="1"
+                android:backgroundTint="#9FD1E8"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onAccountClicked"
+                android:padding="0dp"
+                android:text="ACCOUNT"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="2dp" />
         </LinearLayout>
-
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

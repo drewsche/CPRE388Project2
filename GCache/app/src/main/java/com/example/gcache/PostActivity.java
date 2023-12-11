@@ -65,10 +65,10 @@ public class PostActivity extends AppCompatActivity implements
             throw new IllegalArgumentException("Must pass extra " + KEY_POST_ID);
         }
 
-        // Initialize Firestore and the main RecyclerView
+        // Initialize Firestore
         mFirestore = FirebaseFirestore.getInstance();
 
-        // Get reference to the restaurant
+        // Get reference to the post
         mPostRef = mFirestore.collection("posts").document(postId);
 
         // Get questions
@@ -118,7 +118,7 @@ public class PostActivity extends AppCompatActivity implements
     @Override
     public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
         if (e != null) {
-            Log.w(TAG, "restaurant:onEvent", e);
+            Log.w(TAG, "post:onEvent", e);
             return;
         }
 
