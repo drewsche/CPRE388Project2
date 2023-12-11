@@ -11,7 +11,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -38,10 +37,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
 
     private Location curLocation;
-    private String homeString;
+
     private Location homeLocation;
 
+    private String homeString;
+
     private FusedLocationProviderClient fusedLocationClient;
+
+    private float zoomLevel = 10.0f; // Adjust this value to set the desired zoom level
+
+
+
 
 
     @Override
@@ -58,6 +64,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         geocoder = new Geocoder(this);
+
+//        if(getIntent().getExtras().getString("cityName") != null) {
+//            homeString = getIntent().getExtras().getString("cityName");
+//            Log.d(TAG, "onCreate: homeString: " + homeString);
+//        } else {
+            //TODO: Here we would want to do a lookup in the firebase to see the account location
+            //TODO: Make the user pick a home location in the login
+            homeString = "Des Moines";
+//        }
+
     }
 
 
@@ -66,7 +82,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         Log.d(TAG, "onMapReady: called");
         getCurrentLocation();
+        handleHomeAddress();
     }
+
+
     private void getCurrentLocation() {
         /**
          * Check if I have permission to access COARSE/FINE Location
@@ -91,8 +110,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             if (location != null) {
                                 LatLng curLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.addMarker(new MarkerOptions().position(curLatLng).title("CurrentLocation"));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(curLatLng));
-                                curLocation = location;
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatLng, zoomLevel));
+                                curLocation = location; //Update State Var
                                 Log.d(TAG, "onSuccess: location marker added");
                             }
                         }
@@ -100,8 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     });
         }
     }
-    private void distFromHome() {
-        int distFromHome = 0;
+    private void handleHomeAddress() {
         geocodeListener = new Geocoder.GeocodeListener() {
             @Override
             public void onGeocode(@NonNull List<Address> list) {
@@ -119,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                  * Display the distance to my goal.
                  */
                 displayDistance(curLocation, homeLocation);
-
+                dropMarkerOnHome(homeLocation);
 
 
 
@@ -131,8 +149,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Location.distanceBetween(curLocation.getLatitude(), curLocation.getLongitude(), homeLocation.getLatitude(), homeLocation.getLongitude(), results);
                 distanceMeters = results[0];
                 distanceKm = distanceMeters/1000;
-                Log.d(TAG, "displayDistance: Distance between: " + distanceKm + " meters");
+                Log.d(TAG, "displayDistance: Distance between: " + distanceKm + " kilometers");
 
+                //TODO: upload this value to firebase
+
+            }
+            private void dropMarkerOnHome(Location homeLocation) {
+//                Log.d(TAG, "dropMarkerOnHome: called");
+//                Log.d(TAG, "dropMarkerOnHome: homeLocation lat" + homeLocation.getLatitude());
+//                LatLng homeLatLng = new LatLng(homeLocation.getLatitude(), homeLocation.getLongitude());
+//                mMap.addMarker(new MarkerOptions().position(homeLatLng).title("Home Location"));
+////                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel));
+//
+//                Log.d(TAG, "dropMarkerOnHome: ");
+                
             }
         };
         /**
@@ -140,6 +170,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          */
         geocoder.getFromLocationName(homeString,1, geocodeListener);
     }
+
+
+
 
 
 }

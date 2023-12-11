@@ -29,6 +29,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Transaction;
 
@@ -51,6 +52,9 @@ public class AccountActivity extends AppCompatActivity implements
     private FirebaseFirestore mFirestore;
     private DocumentReference mUserRef;
     private ListenerRegistration mUserRegistration;
+
+    private double latitude = 0;
+    private double longitude = 0;
 
     /**
      * Sets account page and variables, to include edit texts and text views.
@@ -178,7 +182,34 @@ public class AccountActivity extends AppCompatActivity implements
      * @param view The view that shows user home location
      */
     public void onSaveHomeClicked(View view) {
-        // TODO: Change location to current location
+        // TODO: Save the location city string to firebase
+        String homeCity = String.valueOf(homeLocationEditText.getText());
+        Log.d(TAG, "onSaveHomeClicked: homeCity: " + homeCity);
+//        Intent confirmCity = new Intent(this, MapsActivity.class).putExtra("cityName", homeCity);
+//        startActivity(confirmCity);
+        changeHomeCity(mUserRef, displayNameEditText.getText().toString())
+
+
+
+    }
+
+    private Task<Void> changeHomeCity(final DocumentReference userRef, final String newHomeCity) {
+        return mFirestore.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction)
+                    throws FirebaseFirestoreException {
+                User user = transaction.get(userRef)
+                        .toObject(User.class);
+                // Set new restaurant info
+                GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+                user.setHome();
+                // Commit to Firestore
+                transaction.set(userRef, user);
+                return null;
+            }
+        });
+
+
     }
 
     /**
