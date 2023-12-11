@@ -229,6 +229,11 @@ public class AccountActivity extends AppCompatActivity implements
         }
 
     }
+
+    /**
+     * Moves user to map to pick a location
+     * @param view associated with this activity
+     */
     public void onUpdateHomeClicked(View view) {
         // TODO: Save the location city string to firebase
         String homeCity = String.valueOf(homeLocationEditText.getText());
@@ -238,7 +243,12 @@ public class AccountActivity extends AppCompatActivity implements
 
     }
 
-
+    /**
+     * Upload the new coordinates to firebase
+     * @param userRef user logged in.
+     * @param newHomeCity new coordinates to be pushed to firebase
+     * @return null if working properly. else error
+     */
 
     private Task<Void> changeHomeCity(final DocumentReference userRef, final GeoPoint newHomeCity) {
         Log.d(TAG, "changeHomeCity: called");

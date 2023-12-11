@@ -163,7 +163,7 @@ public class MakePostActivity extends AppCompatActivity {
 
     private void displayPhoto(String photoUriString) {
 
-//        filePathTextView.setText(photoUriString);
+        filePathTextView.setText(photoUriString);
 
         Log.d(TAG, "onCreate: filePath: " + photoUriString);
         if(photoUriString != null) {
@@ -261,9 +261,9 @@ public class MakePostActivity extends AppCompatActivity {
                 post.setLocationCoords(lastLocationCoords);
                 post.setLocationName(locationNameTextView.getText().toString());
                 post.setMetPerson(metPersonTextView.getText().toString());
-//                String photoString = convertPhotoToBitmapString();
-//                post.setPhoto(photoString);
-                post.setPhoto("https://raw.githubusercontent.com/julien-gargot/images-placeholder/master/placeholder-portrait.png");
+                String photoString = convertPhotoToBitmapString();
+                post.setPhoto(photoString);
+//                post.setPhoto("https://raw.githubusercontent.com/julien-gargot/images-placeholder/master/placeholder-portrait.png");
                 post.setPoints(pointTotal);
                 post.setPoster(user.getDisplayName());
 //                    post.setPosterUID(mUserRef.toString());
@@ -276,22 +276,22 @@ public class MakePostActivity extends AppCompatActivity {
         });
     }
 
-//    private String convertBitmapToString(Bitmap bitmap) {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-//        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-//        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-//    }
+    private String convertBitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
 
-//    private String convertPhotoToBitmapString() {
-//        // Get the Bitmap from ImageView
-//        Bitmap bitmap = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
-//
-//        // Convert Bitmap to Base64-encoded String
-//        String imageString = convertBitmapToString(bitmap);
-//
-//        return imageString;
-//    }
+    private String convertPhotoToBitmapString() {
+        // Get the Bitmap from ImageView
+        Bitmap bitmap = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+
+        // Convert Bitmap to Base64-encoded String
+        String imageString = convertBitmapToString(bitmap);
+
+        return imageString;
+    }
 
     public void onPhotoClicked(View view) {
         openMediaPicker();

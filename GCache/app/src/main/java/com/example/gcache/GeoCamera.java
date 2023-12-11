@@ -26,6 +26,8 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +44,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -143,6 +146,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
             Log.d(TAG, "onImageSaved: File Saved: " + outputFileResults.getSavedUri());
             Log.d(TAG, "onImageSaved: that but string: " + outputFileResults.getSavedUri().toString());
+
+//            Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(outputFileResults.getSavedUri()));
+//            Log.d(TAG, "onImageSaved: bitmap: " + bitmap.getHeight() + " "+bitmap.getWidth());
+//
             //Shuttle user to the Make Post Screen
             Intent toMakePost = new Intent(GeoCamera.this, MakePostActivity.class);
             toMakePost.putExtra(MakePostActivity.KEY_PHOTO_URI, outputFileResults.getSavedUri().toString());
@@ -174,7 +181,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
         outputFileOptions = new ImageCapture.OutputFileOptions.Builder(myFile2).build();
+
 
 
 
