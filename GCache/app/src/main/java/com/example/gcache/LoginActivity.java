@@ -10,12 +10,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.gcache.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 /**
  * This class represents the login page for the user, and is the first screen
@@ -32,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firestore;
 
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -47,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
+        firestore = FirebaseFirestore.getInstance();
         emailEditText = findViewById(R.id.loginActivity_editText_email);
         passwordEditText = findViewById(R.id.loginActivity_editText_password);
     }
@@ -132,6 +136,9 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if(user != null) {
+                                createUserDocument(user.getUid(), "New User", "https://example.com/profile.jpg", new GeoPoint(0, 0), 0);
+                            }
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(user.getUid())
                                     .build();
@@ -152,6 +159,39 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * When user creates an account, a user document is also created with the appropriate attributes
+     * @param userId value of user id
+     * @param newUser string of new user's display name
+     * @param url url link of user profile pic
+     * @param geoPoint starting location of user
+     * @param i number of points of user
+     */
+    private void createUserDocument(String userId, String newUser, String url, GeoPoint geoPoint, int i) {
+        User user = new User();
+        user.setDisplayName(newUser);
+        user.setProfilePic(url);
+        user.setHome(geoPoint);
+        user.setPoints(i);
+
+        firestore.collection("users")
+                .document(userId)
+                .set(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //user document created successfully
+                            Toast.makeText(LoginActivity.this, "User account created with document.", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            //error creating user doc
+                            Toast.makeText(LoginActivity.this, "Error creating user document.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
