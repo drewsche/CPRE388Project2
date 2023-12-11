@@ -5,14 +5,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -22,14 +20,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.gcache.databinding.ActivityMapsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapsActivity";
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -51,10 +48,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_maps);
-
-//        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
+        binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -69,56 +64,36 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        Log.d(TAG, "onMapReady: called");
         getCurrentLocation();
-    }
-
-    /** Called when the user clicks a marker. */
-    @Override
-    public boolean onMarkerClick(final Marker marker) {
-
-        // Retrieve the data from the marker.
-        Integer clickCount = (Integer) marker.getTag();
-
-        // Check if a click count was set, then display the click count.
-        if (clickCount != null) {
-            clickCount = clickCount + 1;
-            marker.setTag(clickCount);
-            Toast.makeText(MapsActivity.this,
-                    marker.getTitle() +
-                            " has been clicked " + clickCount + " times.",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        // Return false to indicate that we have not consumed the event and that we wish
-        // for the default behavior to occur (which is for the camera to move such that the
-        // marker is centered and for the marker's info window to open, if it has one).
-        return false;
     }
     private void getCurrentLocation() {
         /**
          * Check if I have permission to access COARSE/FINE Location
          */
+        Log.d(TAG, "getCurrentLocation: called");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             /**
              * I don't have permissions so request Permissions
              */
+            Log.d(TAG, "getCurrentLocation: request permissions: called");
             ActivityCompat.requestPermissions(this, DESIRED_PERMISSIONS, PERMISSION_REQUEST_CODE);
-            getCurrentLocation();
         } else {
-
+            Log.d(TAG, "getCurrentLocation: already have permissions");
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
 
                         @Override
                         public void onSuccess(Location location) {
+                            Log.d(TAG, "onSuccess: location known");
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 LatLng curLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.addMarker(new MarkerOptions().position(curLatLng).title("CurrentLocation"));
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(curLatLng));
                                 curLocation = location;
+                                Log.d(TAG, "onSuccess: location marker added");
                             }
                         }
 
@@ -163,24 +138,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         /**
          * Implememnt their listener
          */
-        geocoder.getFromLocationName(homeString,1, geocodeListener);}
-
-    public void onCameraClicked(View view) {
-        Log.d(TAG, "onClick: called");
-        Intent toCamera = new Intent(this, GeoCamera.class);
-        startActivity(toCamera);
+        geocoder.getFromLocationName(homeString,1, geocodeListener);
     }
 
-    public void onAlbumClicked(View view) {
-        Intent toAlbum = new Intent(this, AlbumActivity.class);
-        startActivity(toAlbum);
-    }
-    public void onPublicClicked(View view) {
-        Intent toPublic = new Intent(this, PublicActivity.class);
-        startActivity(toPublic);
-    }
-    public void onAccountClicked(View view) {
-        Intent toAccount = new Intent(this, AccountActivity.class);
-        startActivity(toAccount);
-    }
+
 }
