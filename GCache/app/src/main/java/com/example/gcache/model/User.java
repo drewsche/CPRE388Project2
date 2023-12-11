@@ -4,6 +4,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 public class User {
 
+    private String userId;
     private String displayName;
     private GeoPoint home;
     private int points;
