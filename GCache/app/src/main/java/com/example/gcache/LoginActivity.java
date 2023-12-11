@@ -17,6 +17,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+/**
+ * This class represents the login page for the user, and is the first screen
+ * the user is taken to when opening the app.
+ *
+ * Here the user is able to sign up with a new account by inputting
+ * an email and password. If the user already has an account, they
+ * will instead sign in.
+ *
+ * After this page, the user is taken to the main public page.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
@@ -26,6 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

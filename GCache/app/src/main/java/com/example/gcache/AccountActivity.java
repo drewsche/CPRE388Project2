@@ -32,6 +32,11 @@ public class AccountActivity extends AppCompatActivity {
     private TextView totalPointsTextView;
     private int totalPoints = 0;
 
+    /**
+     * Sets account page and variables, to include edit texts and text views.
+     * Also updates the point display.
+     * @param savedInstanceState State of account page
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
