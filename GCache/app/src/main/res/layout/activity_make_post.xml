@@ -156,7 +156,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Auto-calculated based on your current and saved home location.\nOnly the location name you entered will display on your post."
+                android:text="Auto-calculated based on your current and saved home location.\nHome location and real distance will not display on your post."
                 android:textColor="#FFFFFF"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="@+id/makePostActivity_textView_distancePoints"
