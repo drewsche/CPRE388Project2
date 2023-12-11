@@ -1,5 +1,9 @@
 package com.example.gcache.model;
 
+/**
+ * This class represents the list of questions that is generated for the user
+ * when creating a post. Also adds into the point system
+ */
 public class Question {
 
     private String answer;
@@ -16,6 +20,10 @@ public class Question {
         this.question = question;
     }
 
+    /**
+     * String that returns user answer
+     * @return string answer
+     */
     public String getAnswer() {
         return answer;
     }
@@ -23,6 +31,10 @@ public class Question {
         this.answer = answer;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getIndex() {
         return index;
     }
@@ -30,6 +42,10 @@ public class Question {
         this.index = index;
     }
 
+    /**
+     * String that returns the question for user
+     * @return string question
+     */
     public String getQuestion() {
         return question;
     }
