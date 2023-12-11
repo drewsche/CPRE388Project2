@@ -12,6 +12,12 @@ public class Question {
 
     public Question() {}
 
+    /**
+     * Parameters of a question
+     * @param answer user's answer to question
+     * @param index val of index
+     * @param question the question asked to user
+     */
     public Question(String answer,
                     int index,
                     String question) {
@@ -32,12 +38,17 @@ public class Question {
     }
 
     /**
-     *
-     * @return
+     * Gets index
+     * @return val of index
      */
     public int getIndex() {
         return index;
     }
+
+    /**
+     * Sets the index
+     * @param index set val of index
+     */
     public void setIndex(int index) {
         this.index = index;
     }
