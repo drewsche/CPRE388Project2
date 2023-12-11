@@ -93,6 +93,9 @@ public class AccountActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * Updates page on start and adds snapshot listener
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -100,6 +103,9 @@ public class AccountActivity extends AppCompatActivity implements
         mUserRegistration = mUserRef.addSnapshotListener(this);
     }
 
+    /**
+     * Updates page on stop and removes user registration
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -110,6 +116,11 @@ public class AccountActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Adds document snapshot on event
+     * @param snapshot The value of the event. {@code null} if there was an error.
+     * @param e The error if there was error. {@code null} otherwise.
+     */
     @Override
     public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
         if (e != null) {
@@ -120,6 +131,10 @@ public class AccountActivity extends AppCompatActivity implements
         onUserLoaded(snapshot.toObject(User.class));
     }
 
+    /**
+     * When user is loaded, sets profile pic, total points view and displayed name
+     * @param user the user with parameters such as profile pic, name, and points
+     */
     private void onUserLoaded(User user) {
 
         // Photo image
@@ -131,6 +146,12 @@ public class AccountActivity extends AppCompatActivity implements
         displayNameEditText.setText(user.getDisplayName());
     }
 
+    /**
+     * Task that changes display name
+     * @param userRef value of reference to user
+     * @param newDisplayName string value of new display name for user
+     * @return null value
+     */
     private Task<Void> changeDisplayName(final DocumentReference userRef,
                                  final String newDisplayName) {
         // In a transaction, update displayName
