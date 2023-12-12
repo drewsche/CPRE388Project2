@@ -84,15 +84,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
     ContentValues contentValues;
     ImageCapture.OutputFileOptions outputFileOptions;
 
-
-
-
-
-    // Storing the key and its value as the data fetched from edittext
-
-     private int numPics = 0;
-
-
+    /**
+     * Initialization
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +117,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    /**
+     * Handles the clicks (of the camera buttons)
+     * @param v view associated with the Geocamera class
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonTakePhotoShutter) {
@@ -139,6 +138,9 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    /**
+     * Called when the image is saved (to a file). Allows me to run methods only after the image is saved. Also handles failure case.
+     */
 
     ImageCapture.OnImageSavedCallback imageSavedCallback = new ImageCapture.OnImageSavedCallback() {
         @Override
@@ -165,6 +167,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
         }
     };
 
+    /**
+     * Configures the photo saving options and captures the image.
+     * Code for both save to file and save to gallery is present, however only save to file is uncommented.
+     */
     private void takePhoto() {
 
         /**
@@ -232,6 +238,10 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    /**
+     * Checks if the app has permission to use the camera. If not the app will request permissions.
+     */
+
     private void checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, DESIRED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED) {
             /**
@@ -250,6 +260,9 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    /**
+     * Creates the camera provider and binds it to the preview screen.
+     */
     private void setupCamera() {
 
         cameraProviderFuture.addListener(() -> {
@@ -286,7 +299,9 @@ public class GeoCamera extends AppCompatActivity implements View.OnClickListener
 
     }
 
-
+    /**
+     * Allows the user to switch lens (front and back lenses) changes the preview binding and image capture settings accordingly
+     */
 
     @SuppressLint("RestrictedApi")
     private void switchLens() {

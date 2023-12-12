@@ -29,31 +29,40 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
+/**
+ * This class handles the maps screen where users can modify and set their home location.
+ */
 public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback{
 
     private static final String TAG = "MapsActivity";
+
+    //Permissions
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static String[] DESIRED_PERMISSIONS = {android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
 
+    //API variables
     Geocoder geocoder;
     Geocoder.GeocodeListener geocodeListener;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+    private FusedLocationProviderClient fusedLocationClient;
 
+
+    //State variables
     private Location curLocation;
 
     private Location homeLocation;
 
     private String homeString;
 
-    private FusedLocationProviderClient fusedLocationClient;
 
     private float zoomLevel = 10.0f; // Adjust this value to set the desired zoom level
 
 
-
-
-
+    /**
+     * Setup and initialization
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +91,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
     }
 
-
+    /**
+     * Called when the map is properly loaded and more actions can be taken.
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -91,8 +103,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarke
         handleHomeAddress();
     }
 
-    /** Called when the user clicks a marker. */
-    /** Called when the user clicks a marker. */
+    /**
+     * Call-back when the user clicks a marker.
+     * @param marker which marker has been clicked
+     * @return true if a marker has been clicked
+     */
     @Override
     public boolean onMarkerClick(@NonNull final Marker marker) {
 
@@ -112,7 +127,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarke
         return false;
     }
 
-
+    /**
+     * Gets the current location and drops a marker on the map if found.
+     */
     private void getCurrentLocation() {
         /**
          * Check if I have permission to access COARSE/FINE Location
@@ -151,6 +168,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarke
                     });
         }
     }
+
+    /**
+     * Allows the user to put in a home location using a draggable marker. The marker starts at the user's current location.
+     * Also provides a geocoder to convert an address into a location.
+     */
     private void handleHomeAddress() {
         geocodeListener = new Geocoder.GeocodeListener() {
             @Override
@@ -174,6 +196,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
 
             }
+
+            /**
+             * logs distance between two points.
+             * @param l1 first location
+             * @param l2 second location
+             */
             private void displayDistance(Location l1, Location l2) {
                 float distanceMeters;
                 float distanceKm;
@@ -186,6 +214,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnMarke
                 //TODO: upload this value to firebase
 
             }
+
+            /**
+             * drops a marker on a given location.
+             * @param homeLocation
+             */
             private void dropMarkerOnHome(Location homeLocation) {
 //                Log.d(TAG, "dropMarkerOnHome: called");
 //                Log.d(TAG, "dropMarkerOnHome: homeLocation lat" + homeLocation.getLatitude());

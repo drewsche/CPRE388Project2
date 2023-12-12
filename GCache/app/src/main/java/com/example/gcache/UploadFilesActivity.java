@@ -11,13 +11,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-
+/**
+ * Class showing how to upload a file.
+ */
 public class UploadFilesActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button buttonUploadFiles;
     Button buttonFilesBackToMain;
     private static final String TAG = "UploadFilesActivity";
-
+    /**
+     * Opens the android media picker
+     */
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                 // Callback is invoked after the user selects a media item or closes the
@@ -30,7 +34,10 @@ public class UploadFilesActivity extends AppCompatActivity implements View.OnCli
 
             });
 
-
+    /**
+     * Called when the view is opened
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,10 @@ public class UploadFilesActivity extends AppCompatActivity implements View.OnCli
         buttonFilesBackToMain.setOnClickListener(this);
     }
 
+    /**
+     * called when the user clicks something
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         Log.d(TAG, "onClick: called");
@@ -58,6 +69,9 @@ public class UploadFilesActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    /**
+     * method to allow the user to upload a file
+     */
     private void uploadAFile() {
         // Launch the photo picker and let the user choose only images.
         pickMedia.launch(new PickVisualMediaRequest.Builder()

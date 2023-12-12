@@ -49,6 +49,10 @@ public class PostActivity extends AppCompatActivity implements
 
     private QuestionAdapter mQuestionAdapter;
 
+    /**
+     * Initialization
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +102,9 @@ public class PostActivity extends AppCompatActivity implements
         questionsRecyclerView.setAdapter(mQuestionAdapter);
     }
 
+    /**
+     * Called when the Post is started
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -106,6 +113,9 @@ public class PostActivity extends AppCompatActivity implements
         mPostRegistration = mPostRef.addSnapshotListener(this);
     }
 
+    /**
+     * Called when the post is stopped.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -118,6 +128,11 @@ public class PostActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     * @param snapshot The value of the event. {@code null} if there was an error.
+     * @param e The error if there was error. {@code null} otherwise.
+     */
     @Override
     public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
         if (e != null) {
@@ -128,6 +143,10 @@ public class PostActivity extends AppCompatActivity implements
         onPostLoaded(snapshot.toObject(Post.class));
     }
 
+    /**
+     * Called once the post is loaded.
+     * @param post which post was loaded
+     */
     private void onPostLoaded(Post post) {
 
         String photoString = post.getPhoto();
@@ -157,6 +176,11 @@ public class PostActivity extends AppCompatActivity implements
         aboutMetPersonTextView.setText("About " + post.getMetPerson() + ":");
     }
 
+    /**
+     * Ensures a string consists of only base-64 characters
+     * @param str a user inputted string
+     * @return true if the string is base64
+     */
     public static boolean isBase64(String str) {
         try {
             // Decode the string to check for errors
@@ -171,24 +195,48 @@ public class PostActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Decodes a string into a base-64 bitmap
+     * @param base64String
+     * @return
+     */
     private Bitmap decodeBase64(String base64String) {
         byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
+    /**
+     * Navigates the user to the album page
+     * @param view
+     */
     public void onAlbumClicked(View view) {
         Intent toAlbum = new Intent(this, AlbumActivity.class);
         startActivity(toAlbum);
     }
+
+    /**
+     * Navigates the user to the public page
+     * @param view
+     */
     public void onPublicClicked(View view) {
         Intent toPublic = new Intent(this, PublicActivity.class);
         startActivity(toPublic);
     }
+
+    /**
+     * Navigates the user to the maps page
+     * @param v
+     */
     public void onMapsClicked(View v) {
         Intent toMaps = new Intent(this, MapsActivity.class);
         Log.d(TAG, "onMapsClicked: goToMaps");
         startActivity(toMaps);
     }
+
+    /**
+     * Navigates the user to the accounts page.
+     * @param view
+     */
     public void onAccountClicked(View view) {
         Intent toAccount = new Intent(this, AccountActivity.class);
         startActivity(toAccount);

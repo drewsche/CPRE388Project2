@@ -76,6 +76,10 @@ public class MakePostActivity extends AppCompatActivity {
     private int pointTotal;
     private double distance;
 
+    /**
+     * Allows the user to manually pick a photo from their gallery to make a post.
+     */
+
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                 // Callback is invoked after the user selects a media item or closes the
@@ -89,6 +93,11 @@ public class MakePostActivity extends AppCompatActivity {
                 }
 
             });
+
+    /**
+     * Converts the photo saved as a .jpg to a bitmap.
+     * @param uri uri where the photo is saved on device
+     */
     private void setPicToThis(Uri uri) {
 
         try {
@@ -105,6 +114,10 @@ public class MakePostActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Called when the MakePost activity is called. Handles initialization of view and global variables.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +174,10 @@ public class MakePostActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Displays the photo that was taken with the in-app camera
+     * @param photoUriString
+     */
     private void displayPhoto(String photoUriString) {
 
         filePathTextView.setText(photoUriString);
@@ -174,6 +191,9 @@ public class MakePostActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets the current location of the user for determining points on the post.
+     */
     public void getLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -224,6 +244,13 @@ public class MakePostActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
     }
+
+    /**
+     * Calculates the distance from home location set in account page to the current location when you are posting
+     * @param location current location
+     * @param homeCoords location of home
+     * @return distance
+     */
     private double calculateDistance(Location location, GeoPoint homeCoords) {
 
         Geocoder geocoder = new Geocoder(MakePostActivity.this);
@@ -234,16 +261,27 @@ public class MakePostActivity extends AppCompatActivity {
         return (distanceInMeters / 1609.344);
     }
 
+    /**
+     * Lets the user know how many points they will be getting for posting the post.
+     */
     private void updatePointTotalTextView() {
         pointTotalTextView.setText("Point Total:\n" + pointTotal);
     }
 
+    /**
+     * Allows the user to upload a photo instead of using the one given by the in-app camera.
+     */
     private void openMediaPicker() {
         pickMedia.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                 .build());
     }
 
+    /**
+     * Adds the post to firebase with the correct visibillity (public or private)
+     * @param visibility allows the user to share the post with all people or just save it for themselves
+     * @return null if successful
+     */
     private Task<Void> addPost(String visibility) {
         final DocumentReference postRef = mFirestore.collection("posts").document();
         return mFirestore.runTransaction(new Transaction.Function<Void>() {
@@ -276,6 +314,11 @@ public class MakePostActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Converts the image bitmap to a string so it can be saved to firebase.
+     * @param bitmap representation of the image
+     * @return string representation of the image
+     */
     private String convertBitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -283,6 +326,10 @@ public class MakePostActivity extends AppCompatActivity {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
+    /**
+     * Converts the bitmap on the photoview (that the user is seeing)
+     * @return a bitmap representation of the image.
+     */
     private String convertPhotoToBitmapString() {
         // Get the Bitmap from ImageView
         Bitmap bitmap = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
@@ -293,10 +340,18 @@ public class MakePostActivity extends AppCompatActivity {
         return imageString;
     }
 
+    /**
+     * Handles on click to allow user to upload a different photo.
+     * @param view
+     */
     public void onPhotoClicked(View view) {
         openMediaPicker();
     }
 
+    /**
+     * Allows the user to choose to save their image so that only they can see it.
+     * @param view
+     */
     public void onPostPrivatelyClicked(View view) {
         if((metPersonTextView.getText().toString().isEmpty()) || (locationNameTextView.getText().toString().isEmpty())) {
             Toast.makeText(MakePostActivity.this, "All text fields must be filled",
@@ -307,6 +362,11 @@ public class MakePostActivity extends AppCompatActivity {
             onAlbumClicked(view);
         }
     }
+
+    /**
+     * Allows the user to post their image publicly so all users can see it.
+     * @param view
+     */
     public void onPostPubliclyClicked(View view) {
         if((metPersonTextView.getText().toString().isEmpty()) || (locationNameTextView.getText().toString().isEmpty())) {
             Toast.makeText(MakePostActivity.this, "All text fields must be filled",
@@ -318,19 +378,38 @@ public class MakePostActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles navigation to the album screen
+     * @param view
+     */
     public void onAlbumClicked(View view) {
         Intent toAlbum = new Intent(this, AlbumActivity.class);
         startActivity(toAlbum);
     }
+
+    /**
+     * Handles navigation to the public screen
+     * @param view
+     */
     public void onPublicClicked(View view) {
         Intent toPublic = new Intent(this, PublicActivity.class);
         startActivity(toPublic);
     }
+
+    /**
+     * Handles navigation to the maps screen.
+     * @param v
+     */
     public void onMapsClicked(View v) {
         Intent toMaps = new Intent(this, MapsActivity.class);
         Log.d(TAG, "onMapsClicked: goToMaps");
         startActivity(toMaps);
     }
+
+    /**
+     * Handles navigation to the Account Screen
+     * @param view
+     */
     public void onAccountClicked(View view) {
         Intent toAccount = new Intent(this, AccountActivity.class);
         startActivity(toAccount);

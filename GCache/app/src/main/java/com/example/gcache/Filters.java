@@ -6,6 +6,9 @@ import android.text.TextUtils;
 import com.example.gcache.model.Post;
 import com.google.firebase.firestore.Query;
 
+/**
+ *
+ */
 public class Filters {
 
     private String posterUID = null;
@@ -14,6 +17,7 @@ public class Filters {
     private Query.Direction sortDirection = null;
 
     public Filters() {}
+
 
     public static Filters getDefault() {
         Filters filters = new Filters();

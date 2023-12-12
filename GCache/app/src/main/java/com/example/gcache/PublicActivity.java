@@ -47,6 +47,10 @@ public class PublicActivity extends AppCompatActivity implements
 
     private PublicActivityViewModel mViewModel;
 
+    /**
+     * Initialize the view
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +79,9 @@ public class PublicActivity extends AppCompatActivity implements
         checkCurrentUser();
     }
 
+    /**
+     * Checks which user is signed in using firebase auth
+     */
     public void checkCurrentUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -91,6 +98,9 @@ public class PublicActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Initializes the recycler view to contain all the posts. This will be updated over time.
+     */
     private void initRecyclerView() {
         if (mQuery == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
@@ -122,6 +132,9 @@ public class PublicActivity extends AppCompatActivity implements
         publicPostsRecycler.setAdapter(mAdapter);
     }
 
+    /**
+     * Called when the public activity is started.
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -135,6 +148,9 @@ public class PublicActivity extends AppCompatActivity implements
         onFilter(mViewModel.getFilters());
     }
 
+    /**
+     * Called when the public activity is stopped: like user navigating away
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -143,6 +159,10 @@ public class PublicActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Filters the what posts show up in the public feed based on the given filters.
+     * @param filters
+     */
     @Override
     public void onFilter(Filters filters) {
         filters.setVisibility("Public");
@@ -176,11 +196,19 @@ public class PublicActivity extends AppCompatActivity implements
         mViewModel.setFilters(filters);
     }
 
+    /**
+     * Called when the filter dialog box is clicked.
+     * @param view
+     */
     public void onFilterClicked(View view) {
         // Show the dialog containing filter options
         mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 
+    /**
+     * Moves the user to a specific post when a post is clicked.
+     * @param post
+     */
     @Override
     public void onPostSelected(DocumentSnapshot post) {
         // Go to the details page for the selected restaurant
@@ -190,21 +218,39 @@ public class PublicActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * Navigates the user to the camera page
+     * @param view
+     */
     public void onCameraClicked(View view) {
             Log.d(TAG, "onClick: called");
             Intent toCamera = new Intent(this, GeoCamera.class);
             startActivity(toCamera);
     }
 
+    /**
+     * Navigates the user to the album page
+     * @param view
+     */
     public void onAlbumClicked(View view) {
         Intent toAlbum = new Intent(this, AlbumActivity.class);
         startActivity(toAlbum);
     }
+
+    /**
+     * Navigates the user to the maps page
+     * @param v
+     */
     public void onMapsClicked(View v) {
         Intent toMaps = new Intent(this, MapsActivity.class);
         Log.d(TAG, "onMapsClicked: goToMaps");
         startActivity(toMaps);
     }
+
+    /**
+     * Navigates the user to the account page
+     * @param view
+     */
     public void onAccountClicked(View view) {
         Intent toAccount = new Intent(this, AccountActivity.class);
         startActivity(toAccount);

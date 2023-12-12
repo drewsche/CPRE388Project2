@@ -50,7 +50,7 @@ public class AlbumActivity extends AppCompatActivity implements
     private AlbumActivityViewModel mViewModel;
 
     /**
-     *
+     * Creates all the initial content
      * @param savedInstanceState
      */
     @Override
@@ -79,7 +79,9 @@ public class AlbumActivity extends AppCompatActivity implements
         mFilterDialog = new FilterDialogFragment();
     }
 
-
+    /**
+     * Creates a recycler view that updates when posts/filters change the content
+     */
     private void initRecyclerView() {
         if (mQuery == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
@@ -111,6 +113,9 @@ public class AlbumActivity extends AppCompatActivity implements
         albumPostsRecycler.setAdapter(mAdapter);
     }
 
+    /**
+     * Starts connection to firebase
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -124,6 +129,9 @@ public class AlbumActivity extends AppCompatActivity implements
         onFilter(mViewModel.getFilters());
     }
 
+    /**
+     * Stops connection with firebase.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -132,6 +140,10 @@ public class AlbumActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Modifies the filters that are active
+     * @param filters list of the filters that can be used to sort the posts
+     */
     @Override
     public void onFilter(Filters filters) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -166,11 +178,19 @@ public class AlbumActivity extends AppCompatActivity implements
         mViewModel.setFilters(filters);
     }
 
+    /**
+     * handles button show/hide filter dialogue
+     * @param view
+     */
     public void onFilterClicked(View view) {
         // Show the dialog containing filter options
         mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 
+    /**
+     * Expands a specific post from the timeline
+     * @param post which post to expand
+     */
     @Override
     public void onPostSelected(DocumentSnapshot post) {
         // Go to the details page for the selected restaurant
@@ -180,21 +200,39 @@ public class AlbumActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * Moves the user to the camera page to take a photo
+     * @param view activity_album view xml
+     */
     public void onCameraClicked(View view) {
         Log.d(TAG, "onClick: called");
         Intent toCamera = new Intent(this, GeoCamera.class);
         startActivity(toCamera);
     }
 
+    /**
+     * Moves user to the public album page if not already there
+     * @param view activity_album view xml
+     */
     public void onPublicClicked(View view) {
         Intent toPublic = new Intent(this, PublicActivity.class);
         startActivity(toPublic);
     }
+
+    /**
+     * Moves the user to the maps page if not already there
+     * @param v activity_album view xml
+     */
     public void onMapsClicked(View v) {
         Intent toMaps = new Intent(this, MapsActivity.class);
         Log.d(TAG, "onMapsClicked: goToMaps");
         startActivity(toMaps);
     }
+
+    /**
+     * Moves the user to the manage account page if not already there.
+     * @param view activity_album view xml
+     */
     public void onAccountClicked(View view) {
         Intent toAccount = new Intent(this, AccountActivity.class);
         startActivity(toAccount);
