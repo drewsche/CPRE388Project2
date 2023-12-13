@@ -2,6 +2,9 @@ package com.example.gcache.model;
 
 import com.google.firebase.firestore.GeoPoint;
 
+/**
+ * Class representing a user.
+ */
 public class User {
 
     private String userId;

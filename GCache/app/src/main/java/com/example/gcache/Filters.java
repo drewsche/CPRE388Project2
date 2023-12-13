@@ -64,6 +64,11 @@ public class Filters {
         this.sortDirection = sortDirection;
     }
 
+    /**
+     * Generates a string for the title of the public and album pages
+     * @param context
+     * @return string with correct visibility for the public and album pages
+     */
     public String getSearchDescription(Context context) {
         StringBuilder desc = new StringBuilder();
 
@@ -91,6 +96,11 @@ public class Filters {
         return desc.toString();
     }
 
+    /**
+     * Returns the string representation of the sortby choice for debugging
+     * @param context
+     * @return
+     */
     public String getOrderDescription(Context context) {
         if (Post.FIELD_POINTS.equals(sortBy)) {
             return "Sorted By Points";

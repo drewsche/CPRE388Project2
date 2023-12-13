@@ -12,6 +12,9 @@ import com.example.gcache.R;
 import com.example.gcache.model.Question;
 import com.google.firebase.firestore.Query;
 
+/**
+ * Class to support making a new question in a post.
+ */
 public class QuestionAdapter extends FirestoreAdapter<QuestionAdapter.ViewHolder> {
 
     public QuestionAdapter(Query query) {
